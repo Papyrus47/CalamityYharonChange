@@ -3,9 +3,12 @@ using CalamityMod.NPCs;
 using CalamityMod.NPCs.Yharon;
 using CalamityMod.World;
 using CalamityYharonChange.Content.NPCs.YharonNPC.Modes;
+using CalamityYharonChange.Content.Projs;
 using CalamityYharonChange.Content.Skys;
+using CalamityYharonChange.Content.Systems;
 using CalamityYharonChange.Core.SkillsNPC;
 using System.Collections.Generic;
+using Terraria;
 using Terraria.GameContent.Bestiary;
 using Terraria.Graphics.Effects;
 using static CalamityMod.NPCStats;
@@ -15,6 +18,15 @@ namespace CalamityYharonChange.Content.NPCs.YharonNPC
     [AutoloadBossHead]
     public class YharonNPC : BasicSkillNPC
     {
+        public Player TargetPlayer
+        {
+            get
+            {
+                if (NPC.target < 0 || NPC.target == 255 || Main.player[NPC.target].dead || !Main.player[NPC.target].active)
+                    NPC.TargetClosest();
+                return Main.player[NPC.target];
+            }
+        }
         public static float normalDR = 0.22f;
         public static float EnragedDR = 0.9f;
 
@@ -47,7 +59,7 @@ namespace CalamityYharonChange.Content.NPCs.YharonNPC
                 GlowTexturePurple = ModContent.Request<Texture2D>(Texture + "GlowPurple");
             }
             CalamityMod.CalamityMod.bossKillTimes.Add(Type, 14700);
-            Phase1Music = MusicLoader.GetMusicSlot(Mod, "Sounds/Music/YharonPhase1");
+            Phase1Music = MusicLoader.GetMusicSlot("CalamityYharonChange/Assets/Sounds/Music/YharonPhase1");
         }
         public override void SetDefaults()
         {
@@ -75,6 +87,7 @@ namespace CalamityYharonChange.Content.NPCs.YharonNPC
             NPC.Calamity().VulnerableToSickness = true;
             Music = Phase1Music;
         }
+        public override bool CheckActive() => false;
         public override void SetBestiary(BestiaryDatabase database, BestiaryEntry bestiaryEntry)
         {
             bestiaryEntry.Info.AddRange(new IBestiaryInfoElement[1]
@@ -89,8 +102,18 @@ namespace CalamityYharonChange.Content.NPCs.YharonNPC
             calamityGlobalNPC.CurrentlyIncreasingDefenseOrDR = true;
             base.AI();
             SkyManager.Instance.Activate(nameof(YharonSky));
+            YharonChangeSystem.YharonBoss = -1;
+            if(NPC.Calamity().AITimer > 500) // 播放音乐
+            {
+                Music = Phase1Music;
+            }
+            if(YharonChangeSystem.YharonBoss != -1)
+            {
+                NPC.active = false;
+                return;
+            }
+            YharonChangeSystem.YharonBoss = NPC.whoAmI; // 记录Boss的whoAmI
         }
-
         public override void Init()
         {
             SaveModes = new();
@@ -99,6 +122,9 @@ namespace CalamityYharonChange.Content.NPCs.YharonNPC
             SaveSkillsID = new();
             OldSkills = new();
 
+            YharonChangeSystem.YharonFixedPos = TargetPlayer.position; // 固定战斗场地位置
+            Projectile.NewProjectile(NPC.GetSource_FromAI(), TargetPlayer.position, Vector2.Zero, ModContent.ProjectileType<YharonLimitWing>(), 0, 0, TargetPlayer.whoAmI, 1);
+            Projectile.NewProjectile(NPC.GetSource_FromAI(), TargetPlayer.position, Vector2.Zero, ModContent.ProjectileType<YharonLimitWing>(), 0, 0, TargetPlayer.whoAmI, -1);
             #region 状态
             YharonPhase1 yharonPhase1 = new YharonPhase1(NPC);
 
@@ -108,7 +134,9 @@ namespace CalamityYharonChange.Content.NPCs.YharonNPC
             #region 技能
             #endregion
         }
-
+        /// <summary>
+        /// 技能强制跳出后执行
+        /// </summary>
         public override void OnSkillTimeOut()
         {
 

@@ -12,9 +12,17 @@ namespace CalamityYharonChange.Content.Systems
         /// 检测世界是否存在YharonBoss
         /// </summary>
         public static int YharonBoss;
-        public override void PreUpdateEntities()
+        /// <summary>
+        /// 这是Boss战固定的初始位置
+        /// </summary>
+        public static Vector2 YharonFixedPos;
+        public override void PostUpdateEverything()
         {
-            YharonBoss = -1;
+            if (YharonBoss == -1)
+            {
+                YharonFixedPos = default;
+            }
+            YharonChangeSystem.YharonBoss = -1; // 记录Boss的whoAmI
         }
     }
 }

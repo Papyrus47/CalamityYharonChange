@@ -14,7 +14,6 @@
 	</ItemGroup>
 	<ItemGroup>
 	  <Folder Include="Assets\Effects\" />
-	  <Folder Include="Content\NPCs\YharonNPC\Skills\" />
 	</ItemGroup>
 	<ItemGroup>
 		<Publicize Include="CalamityMod" IncludeVirtualMembers="false" />
