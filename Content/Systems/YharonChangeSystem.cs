@@ -22,7 +22,7 @@ namespace CalamityYharonChange.Content.Systems
             {
                 YharonFixedPos = default;
             }
-            YharonChangeSystem.YharonBoss = -1; // 记录Boss的whoAmI
+            YharonBoss = -1; // 记录Boss的whoAmI
         }
     }
 }

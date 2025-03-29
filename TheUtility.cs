@@ -126,9 +126,19 @@
             }
             return true;
         }
+        /// <summary>
+        /// 用这个注册文本，自动带上前缀
+        /// </summary>
+        /// <param name="key"></param>
+        /// <returns></returns>
+        public static LocalizedText RegisterTextByPrefix(string key)
+        {
+            return Language.GetOrRegister("Mods.CalamityYharonChange." + key, () => key);
+        }
         public static string RegisterText(string key)
         {
             return Language.GetOrRegister(key, () => key).Value;
         }
+        public static CalamtiyYharonPlayer Yharon(this Player player) => player.GetModPlayer<CalamtiyYharonPlayer>();
     }
 }

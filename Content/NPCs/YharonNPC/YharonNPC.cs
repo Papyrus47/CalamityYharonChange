@@ -1,6 +1,7 @@
 ﻿using CalamityMod;
 using CalamityMod.NPCs;
 using CalamityMod.NPCs.Yharon;
+using CalamityMod.Projectiles.Boss;
 using CalamityMod.World;
 using CalamityYharonChange.Content.NPCs.YharonNPC.Modes;
 using CalamityYharonChange.Content.Projs;
@@ -36,6 +37,7 @@ namespace CalamityYharonChange.Content.NPCs.YharonNPC
 
         public static Asset<Texture2D> GlowTexturePurple;
         public static int Phase1Music;
+        public static int FlareBomb;
         public override void SetStaticDefaults()
         {
             base.SetStaticDefaults();
@@ -60,6 +62,7 @@ namespace CalamityYharonChange.Content.NPCs.YharonNPC
             }
             CalamityMod.CalamityMod.bossKillTimes.Add(Type, 14700);
             Phase1Music = MusicLoader.GetMusicSlot("CalamityYharonChange/Assets/Sounds/Music/YharonPhase1");
+            FlareBomb = ModContent.ProjectileType<FlareBomb>();
         }
         public override void SetDefaults()
         {
@@ -72,6 +75,7 @@ namespace CalamityYharonChange.Content.NPCs.YharonNPC
             NPC.LifeMaxNERB(1300000, 1560000, 740000);
             double HPBoost = (double)CalamityConfig.Instance.BossHealthBoost * 0.01;
             NPC.lifeMax += (int)(NPC.lifeMax * HPBoost);
+            NPC.lifeMax /= 10;
             NPC.knockBackResist = 0f;
             NPC.aiStyle = -1;
             AIType = -1;
@@ -98,16 +102,12 @@ namespace CalamityYharonChange.Content.NPCs.YharonNPC
         public override void AI()
         {
             CalamityGlobalNPC calamityGlobalNPC = NPC.Calamity();
-            calamityGlobalNPC.DR = EnragedDR;
+            calamityGlobalNPC.DR = normalDR;
             calamityGlobalNPC.CurrentlyIncreasingDefenseOrDR = true;
             base.AI();
             SkyManager.Instance.Activate(nameof(YharonSky));
             YharonChangeSystem.YharonBoss = -1;
-            if(NPC.Calamity().AITimer > 500) // 播放音乐
-            {
-                Music = Phase1Music;
-            }
-            if(YharonChangeSystem.YharonBoss != -1)
+            if (YharonChangeSystem.YharonBoss != -1)
             {
                 NPC.active = false;
                 return;
