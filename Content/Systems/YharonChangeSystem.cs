@@ -1,4 +1,5 @@
-﻿using System;
+﻿using CalamityYharonChange.Content.NPCs.YharonNPC;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -22,7 +23,16 @@ namespace CalamityYharonChange.Content.Systems
             {
                 YharonFixedPos = default;
             }
-            YharonBoss = -1; // 记录Boss的whoAmI
+            bool CleanYharonBoss = true;
+            foreach(NPC npc in Main.npc)
+            {
+                if(npc.active && npc.type == ModContent.NPCType<YharonNPC>())
+                {
+                    CleanYharonBoss = false;
+                }
+            }
+            if (CleanYharonBoss)
+                YharonBoss = -1;
         }
     }
 }

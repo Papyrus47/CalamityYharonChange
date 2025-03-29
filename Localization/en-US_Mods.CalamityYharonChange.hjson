@@ -1,2 +1,9 @@
-NPCs.YharonNPC.DisplayName: Yharon N P C
-Projectiles.YharonLimitWing.DisplayName: Yharon Limit Wing
+﻿NPCs.YharonNPC.DisplayName: 重生之龙·犽戎
+Projectiles.YharonLimitWing.DisplayName: 限制圈
+
+Buffs: {
+	HellDragonfire: {
+		DisplayName: 炼狱龙炎
+		Description: 你在试图逃跑？
+	}
+}

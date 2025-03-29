@@ -30,7 +30,7 @@ namespace CalamityYharonChange
             {
                 if (Math.Abs(Player.Center.X - YharonChangeSystem.YharonFixedPos.X) > 960 || Math.Abs(Player.Center.Y - YharonChangeSystem.YharonFixedPos.Y) > 4000)
                 {
-                    Player.AddBuff(ModContent.BuffType<HellDragonfire>(), 1);
+                    Player.AddBuff(ModContent.BuffType<HellDragonfire>(), 20);
                 }
             }
         }
@@ -51,7 +51,7 @@ namespace CalamityYharonChange
         }
         public override void UpdateBadLifeRegen()
         {
-            ApplyDoTDebuff(hellDragonFire, -200);
+            ApplyDoTDebuff(hellDragonFire, 200);
         }
         void ApplyDoTDebuff(bool hasDebuff, int negativeLifeRegenToApply, bool immuneCondition = false)
         {
