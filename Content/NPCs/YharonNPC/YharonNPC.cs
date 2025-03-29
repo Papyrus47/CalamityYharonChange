@@ -4,6 +4,7 @@ using CalamityMod.NPCs.Yharon;
 using CalamityMod.Projectiles.Boss;
 using CalamityMod.World;
 using CalamityYharonChange.Content.NPCs.YharonNPC.Modes;
+using CalamityYharonChange.Content.NPCs.YharonNPC.Skills.Phase1;
 using CalamityYharonChange.Content.Projs;
 using CalamityYharonChange.Content.Skys;
 using CalamityYharonChange.Content.Systems;
@@ -38,11 +39,13 @@ namespace CalamityYharonChange.Content.NPCs.YharonNPC
         public static Asset<Texture2D> GlowTexturePurple;
         public static int Phase1Music;
         public static int FlareBomb;
+        public static int YharonBoomProj;
+        public static int YharonRoarWave;
         public override void SetStaticDefaults()
         {
             base.SetStaticDefaults();
             Main.npcFrameCount[NPC.type] = 7;
-            NPCID.Sets.TrailingMode[NPC.type] = 1;
+            NPCID.Sets.TrailingMode[NPC.type] = 3;
             NPCID.Sets.BossBestiaryPriority.Add(Type);
             NPCID.Sets.NPCBestiaryDrawModifiers nPCBestiaryDrawModifiers = new NPCID.Sets.NPCBestiaryDrawModifiers();
             nPCBestiaryDrawModifiers.Scale = 0.3f;
@@ -61,8 +64,14 @@ namespace CalamityYharonChange.Content.NPCs.YharonNPC
                 GlowTexturePurple = ModContent.Request<Texture2D>(Texture + "GlowPurple");
             }
             CalamityMod.CalamityMod.bossKillTimes.Add(Type, 14700);
+            
             Phase1Music = MusicLoader.GetMusicSlot("CalamityYharonChange/Assets/Sounds/Music/YharonPhase1");
             FlareBomb = ModContent.ProjectileType<FlareBomb>();
+            YharonBoomProj = ModContent.ProjectileType<YharonBoomProj>();
+            YharonRoarWave = ModContent.ProjectileType<YharonRoarWave>();
+
+            EnemyStats.ProjectileDamageValues.Add(new Tuple<int, int>(Type, ModContent.ProjectileType<FlareBomb>()), new int[5] { 300, 300, 300, 300, 300 }); // 添加弹幕伤害
+            EnemyStats.ProjectileDamageValues.Add(new Tuple<int, int>(Type, ModContent.ProjectileType<YharonBoomProj>()), new int[5] { 300, 300, 300, 300, 300 }); // 添加弹幕伤害
         }
         public override void SetDefaults()
         {
@@ -85,6 +94,7 @@ namespace CalamityYharonChange.Content.NPCs.YharonNPC
             NPC.noGravity = true;
             NPC.noTileCollide = true;
             NPC.netAlways = true;
+            NPC.alpha = 255;
             NPC.DeathSound = Yharon.DeathSound;
             NPC.Calamity().VulnerableToHeat = false;
             NPC.Calamity().VulnerableToCold = true;
@@ -132,6 +142,15 @@ namespace CalamityYharonChange.Content.NPCs.YharonNPC
             CurrentMode = yharonPhase1;
             #endregion
             #region 技能
+            #region 第一阶段
+            NoAtk noAtk = new(NPC);
+            
+            FirstAttack_ProjHell firstAttack_ProjHell = new(NPC);
+
+            SkillNPC.Register(noAtk, firstAttack_ProjHell); // 注册技能
+            noAtk.AddSkill(firstAttack_ProjHell); // 技能链
+            CurrentSkill = noAtk;
+            #endregion
             #endregion
         }
         /// <summary>

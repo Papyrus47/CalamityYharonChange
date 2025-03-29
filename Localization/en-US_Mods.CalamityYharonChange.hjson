@@ -1,5 +1,11 @@
-﻿NPCs.YharonNPC.DisplayName: 重生之龙·犽戎
-Projectiles.YharonLimitWing.DisplayName: 限制圈
+NPCs.YharonNPC.DisplayName: 重生之龙·犽戎
+
+Projectiles: {
+	YharonLimitWing.DisplayName: 限制圈
+	YharonRoarWave.DisplayName: Yharon Roar Wave
+	Misc.YharonRoarWave.DisplayName: Yharon Roar Wave
+	YharonBoomProj.DisplayName: Yharon Boom Proj
+}
 
 Buffs: {
 	HellDragonfire: {

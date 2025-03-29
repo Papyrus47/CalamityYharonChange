@@ -33,6 +33,11 @@ namespace CalamityYharonChange
             Main.OnResolutionChanged += Main_OnResolutionChanged;
             SkyManager.Instance[nameof(YharonSky)] = new YharonSky();
             MusicLoader.AddMusic(this, "Assets/Sounds/Music/YharonPhase1");
+            AssetPreservation.Load();
+        }
+        public override void Unload()
+        {
+            AssetPreservation.UnLood();
         }
         private static void Main_OnResolutionChanged(Vector2 obj)
         {

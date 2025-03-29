@@ -20,10 +20,11 @@
             int i = 0;
             while (true)
             {
-                if (ModContent.HasAsset(SavePath_Iamge + "Extra_" + i))
-                    Extra.Add(i, ModContent.Request<Texture2D>(SavePath_Iamge + "Extra_" + i));
+                if (ModContent.HasAsset(SavePath_Iamge + "Extra/Extra_" + i))
+                    Extra.Add(i, ModContent.Request<Texture2D>(SavePath_Iamge + "Extra/Extra_" + i));
                 else
                     break;
+                i++;
             }
         }
         public static void UnLood()
