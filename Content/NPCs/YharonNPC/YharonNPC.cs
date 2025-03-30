@@ -4,8 +4,9 @@ using CalamityMod.NPCs.Yharon;
 using CalamityMod.Projectiles.Boss;
 using CalamityMod.World;
 using CalamityYharonChange.Content.NPCs.YharonNPC.Modes;
+using CalamityYharonChange.Content.NPCs.YharonNPC.Skills.General;
 using CalamityYharonChange.Content.NPCs.YharonNPC.Skills.Phase1;
-using CalamityYharonChange.Content.Projs;
+using CalamityYharonChange.Content.Projs.Bosses.Yharon;
 using CalamityYharonChange.Content.Skys;
 using CalamityYharonChange.Content.Systems;
 using CalamityYharonChange.Core.SkillsNPC;
@@ -45,7 +46,7 @@ namespace CalamityYharonChange.Content.NPCs.YharonNPC
         {
             base.SetStaticDefaults();
             Main.npcFrameCount[NPC.type] = 7;
-            NPCID.Sets.TrailingMode[NPC.type] = 3;
+            NPCID.Sets.TrailingMode[NPC.type] = 1;
             NPCID.Sets.BossBestiaryPriority.Add(Type);
             NPCID.Sets.NPCBestiaryDrawModifiers nPCBestiaryDrawModifiers = new NPCID.Sets.NPCBestiaryDrawModifiers();
             nPCBestiaryDrawModifiers.Scale = 0.3f;
@@ -147,8 +148,14 @@ namespace CalamityYharonChange.Content.NPCs.YharonNPC
             
             FirstAttack_ProjHell firstAttack_ProjHell = new(NPC);
 
-            SkillNPC.Register(noAtk, firstAttack_ProjHell); // 注册技能
-            noAtk.AddSkill(firstAttack_ProjHell); // 技能链
+            Dash firstAttack_dash_1 = new(NPC, 60, 35)
+            {
+                OnDashAI = (_) => NPC.dontTakeDamage = false
+            };
+            Dash firstAttack_dash_2 = new(NPC, 30, 35);
+
+            SkillNPC.Register(noAtk, firstAttack_ProjHell,firstAttack_dash_1,firstAttack_dash_2); // 注册技能
+            noAtk.AddSkill(firstAttack_ProjHell).AddSkill(firstAttack_dash_1).AddSkill(firstAttack_dash_2).AddSkill(firstAttack_ProjHell); // 技能链
             CurrentSkill = noAtk;
             #endregion
             #endregion

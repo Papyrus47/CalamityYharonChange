@@ -1,4 +1,5 @@
 ﻿using CalamityYharonChange.Core.SkillsNPC;
+using Microsoft.Xna.Framework.Graphics;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -25,6 +26,30 @@ namespace CalamityYharonChange.Content.NPCs.YharonNPC.Skills
             base.OnSkillDeactivate(changeToSkill);
             SkillTimeOut = false;
             NPC.ai[0] = NPC.ai[1] = NPC.ai[2] = NPC.ai[3] = 0;
+        }
+        public override bool PreDraw(SpriteBatch spriteBatch, Vector2 screenPos, Color drawColor)
+        {
+            Main.instance.LoadNPC(NPC.type);
+            Texture2D tex = TextureAssets.Npc[NPC.type].Value;
+            spriteBatch.Draw(tex, NPC.Center - screenPos, NPC.frame, drawColor, NPC.rotation, NPC.frame.Size() * 0.5f, NPC.scale, NPC.spriteDirection == 1 ? SpriteEffects.None : SpriteEffects.FlipHorizontally, 0f);
+            return false;
+        }
+        public virtual void DrawBall(SpriteBatch spriteBatch, Vector2 screenPos)
+        {
+            _ = AssetPreservation.Extra[2];
+            Asset<Texture2D> drawTex = AssetPreservation.Extra[2];
+            spriteBatch.Draw(drawTex.Value, NPC.Center - screenPos, null, Color.OrangeRed with { A = 0 } * (1f - NPC.alpha / 255f), 0, drawTex.Size() * 0.5f, NPC.scale * 2f, SpriteEffects.None, 0f);
+            spriteBatch.Draw(drawTex.Value, NPC.Center - screenPos, null, Color.White with { A = 0 } * (1f - NPC.alpha / 255f), 0, drawTex.Size() * 0.5f, NPC.scale * 0.8f * 2f, SpriteEffects.None, 0f);
+        }
+        public virtual void DrawAfterimage(SpriteBatch spriteBatch, Vector2 screenPos)
+        {
+            _ = TextureAssets.Npc[NPC.type].Value;
+            Texture2D tex = TextureAssets.Npc[NPC.type].Value;
+            float drawConst = NPCID.Sets.TrailCacheLength[NPC.type];
+            for(int i = 1; i < drawConst; i++)
+            {
+                spriteBatch.Draw(tex, NPC.oldPos[i] + NPC.frame.Size() * 0.25f * NPC.scale - screenPos, NPC.frame, Color.White * (1f - i / drawConst), NPC.rotation, NPC.frame.Size() * 0.5f, NPC.scale, NPC.spriteDirection == 1 ? SpriteEffects.None : SpriteEffects.FlipHorizontally, 0f);
+            }
         }
     }
 }

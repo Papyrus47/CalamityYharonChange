@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace CalamityYharonChange.Content.Projs
+namespace CalamityYharonChange.Content.Projs.Bosses.Yharon
 {
     public class YharonBoomProj : ModProjectile
     {

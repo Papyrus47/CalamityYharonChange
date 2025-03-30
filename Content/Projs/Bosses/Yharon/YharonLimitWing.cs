@@ -7,7 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace CalamityYharonChange.Content.Projs
+namespace CalamityYharonChange.Content.Projs.Bosses.Yharon
 {
     public class YharonLimitWing : ModProjectile
     {
@@ -28,7 +28,7 @@ namespace CalamityYharonChange.Content.Projs
         }
         public override void AI()
         {
-            if (YharonChangeSystem.YharonBoss == -1 || (YharonChangeSystem.YharonBoss >= 0 && (Main.npc[YharonChangeSystem.YharonBoss].ModNPC as YharonNPC).CurrentMode is not YharonPhase1)) // 清除弹幕
+            if (YharonChangeSystem.YharonBoss == -1 || YharonChangeSystem.YharonBoss >= 0 && (Main.npc[YharonChangeSystem.YharonBoss].ModNPC as YharonNPC).CurrentMode is not YharonPhase1) // 清除弹幕
             {
                 Projectile.ai[2]++;
                 if (Projectile.ai[2] > 60f)

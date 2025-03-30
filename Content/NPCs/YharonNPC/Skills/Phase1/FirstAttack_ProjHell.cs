@@ -21,7 +21,6 @@ namespace CalamityYharonChange.Content.NPCs.YharonNPC.Skills.Phase1
         public override void AI()
         {
             NPC.ai[0]++;
-            NPC.scale = 1;
             NPC.velocity *= 0;
             NPC.dontTakeDamage = true;
             if ((int)NPC.ai[0] == 1) // 产生扩散波,并且上Debuff
@@ -61,20 +60,17 @@ namespace CalamityYharonChange.Content.NPCs.YharonNPC.Skills.Phase1
             //        Projectile.NewProjectileDirect(NPC.GetSource_FromAI(), NPC.Center + Vector2.UnitX.RotatedBy(i / Const * MathHelper.TwoPi) * (lenght * 98f * 2f), Vector2.Zero, type, 0, 0f, Target.whoAmI, 1);
             //    }
             //}
-            if (NPC.ai[0] / 60 > 9)
-            {
-                NPC.ai[0] = 0;
-            }
+            //if (NPC.ai[0] / 60 > 9)
+            //{
+            //    NPC.ai[0] = 0;
+            //}
         }
         public override bool PreDraw(SpriteBatch spriteBatch, Vector2 screenPos, Color drawColor)
         {
-            _ = AssetPreservation.Extra[2];
-            Asset<Texture2D> drawTex = AssetPreservation.Extra[2];
-            spriteBatch.Draw(drawTex.Value, NPC.Center - screenPos, null, Color.OrangeRed with { A = 0 } * (1f - NPC.alpha / 255f), 0, drawTex.Size() * 0.5f, NPC.scale* 2f, SpriteEffects.None, 0f);
-            spriteBatch.Draw(drawTex.Value, NPC.Center - screenPos, null, Color.White with { A = 0 } * (1f - NPC.alpha / 255f), 0, drawTex.Size() * 0.5f, NPC.scale * 0.8f * 2f, SpriteEffects.None, 0f);
+            DrawBall(spriteBatch, screenPos);
             return false;
         }
-        public override bool SwitchCondition(NPCSkills changeToSkill) => base.SwitchCondition(changeToSkill);
+        public override bool SwitchCondition(NPCSkills changeToSkill) => (NPC.ai[0] - 20) / 60 > 9;
         public override bool ActivationCondition(NPCSkills activeSkill) => true; // 只要上个技能满足切换条件就允许切换该技能
     }
 }

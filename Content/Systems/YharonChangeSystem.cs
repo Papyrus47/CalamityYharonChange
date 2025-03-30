@@ -1,9 +1,11 @@
 ﻿using CalamityYharonChange.Content.NPCs.YharonNPC;
+using CalamityYharonChange.Content.UIs;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Terraria.UI;
 
 namespace CalamityYharonChange.Content.Systems
 {

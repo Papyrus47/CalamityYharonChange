@@ -2,7 +2,7 @@
 using CalamityMod.Projectiles.BaseProjectiles;
 using CalamityMod.Projectiles.DraedonsArsenal;
 
-namespace CalamityYharonChange.Content.Projs
+namespace CalamityYharonChange.Content.Projs.Bosses.Yharon
 {
     public class YharonRoarWave : BaseMassiveExplosionProjectile, ILocalizedModType, IModType
     {

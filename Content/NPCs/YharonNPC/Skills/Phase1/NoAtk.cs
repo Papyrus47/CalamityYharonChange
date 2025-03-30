@@ -1,4 +1,4 @@
-﻿using CalamityYharonChange.Content.Projs;
+﻿using CalamityYharonChange.Content.Projs.Bosses.Yharon;
 using CalamityYharonChange.Core.SkillsNPC;
 using System;
 using System.Collections.Generic;
@@ -19,7 +19,6 @@ namespace CalamityYharonChange.Content.NPCs.YharonNPC.Skills.Phase1
         public override void AI()
         {
             NPC.velocity *= 0f;
-            NPC.scale = 1;
             NPC.ai[0]++;
             NPC.dontTakeDamage = true;
             if (NPC.alpha > 0)
@@ -29,10 +28,7 @@ namespace CalamityYharonChange.Content.NPCs.YharonNPC.Skills.Phase1
         }
         public override bool PreDraw(SpriteBatch spriteBatch, Vector2 screenPos, Color drawColor)
         {
-            _ = AssetPreservation.Extra[2];
-            Asset<Texture2D> drawTex = AssetPreservation.Extra[2];
-            spriteBatch.Draw(drawTex.Value, NPC.Center - screenPos, null, Color.OrangeRed with { A = 0 } * (1f - NPC.alpha / 255f), 0, drawTex.Size() * 0.5f, NPC.scale * 2f, SpriteEffects.None, 0f);
-            spriteBatch.Draw(drawTex.Value, NPC.Center - screenPos, null, Color.White with { A = 0 } * (1f - NPC.alpha / 255f), 0, drawTex.Size() * 0.5f, NPC.scale * 0.8f * 2f, SpriteEffects.None, 0f);
+            DrawBall(spriteBatch, screenPos); 
             return false;
         }
         public override bool CanHitPlayer(Player target, ref int cooldownSlot) => false; // 禁止攻击玩家
