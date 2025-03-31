@@ -15,8 +15,8 @@ Buffs: {
 	}
 
 	FlyWind: {
-		DisplayName: Fly Wind
-		Description: Mods.CalamityYharonChange.Buffs.FlyWind.Description
+		DisplayName: 撕裂
+		Description: 你的五脏六腑已被撕裂
 	}
 }
 
