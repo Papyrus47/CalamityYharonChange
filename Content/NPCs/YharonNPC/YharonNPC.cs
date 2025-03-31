@@ -34,14 +34,15 @@ namespace CalamityYharonChange.Content.NPCs.YharonNPC
         public static float EnragedDR = 0.9f;
 
         public static Asset<Texture2D> GlowTextureGreen;
-
         public static Asset<Texture2D> GlowTextureOrange;
-
         public static Asset<Texture2D> GlowTexturePurple;
+
         public static int Phase1Music;
+
         public static int FlareBomb;
         public static int YharonBoomProj;
         public static int YharonRoarWave;
+        public static int YharonWind;
         public override void SetStaticDefaults()
         {
             base.SetStaticDefaults();
@@ -67,9 +68,11 @@ namespace CalamityYharonChange.Content.NPCs.YharonNPC
             CalamityMod.CalamityMod.bossKillTimes.Add(Type, 14700);
             
             Phase1Music = MusicLoader.GetMusicSlot("CalamityYharonChange/Assets/Sounds/Music/YharonPhase1");
+
             FlareBomb = ModContent.ProjectileType<FlareBomb>();
             YharonBoomProj = ModContent.ProjectileType<YharonBoomProj>();
             YharonRoarWave = ModContent.ProjectileType<YharonRoarWave>();
+            YharonWind = ModContent.ProjectileType<YharonWind>();
 
             EnemyStats.ProjectileDamageValues.Add(new Tuple<int, int>(Type, ModContent.ProjectileType<FlareBomb>()), new int[5] { 300, 300, 300, 300, 300 }); // 添加弹幕伤害
             EnemyStats.ProjectileDamageValues.Add(new Tuple<int, int>(Type, ModContent.ProjectileType<YharonBoomProj>()), new int[5] { 300, 300, 300, 300, 300 }); // 添加弹幕伤害
@@ -148,14 +151,16 @@ namespace CalamityYharonChange.Content.NPCs.YharonNPC
             
             FirstAttack_ProjHell firstAttack_ProjHell = new(NPC);
 
+            SecondAttack_Wind secondAttack_Wind = new(NPC);
+
             Dash firstAttack_dash_1 = new(NPC, 60, 35)
             {
                 OnDashAI = (_) => NPC.dontTakeDamage = false
             };
             Dash firstAttack_dash_2 = new(NPC, 30, 35);
 
-            SkillNPC.Register(noAtk, firstAttack_ProjHell,firstAttack_dash_1,firstAttack_dash_2); // 注册技能
-            noAtk.AddSkill(firstAttack_ProjHell).AddSkill(firstAttack_dash_1).AddSkill(firstAttack_dash_2).AddSkill(firstAttack_ProjHell); // 技能链
+            SkillNPC.Register(noAtk, firstAttack_ProjHell,firstAttack_dash_1,firstAttack_dash_2, secondAttack_Wind); // 注册技能
+            noAtk.AddSkill(firstAttack_ProjHell).AddSkill(secondAttack_Wind).AddSkill(firstAttack_dash_1).AddSkill(firstAttack_dash_2).AddSkill(firstAttack_ProjHell); // 技能链
             CurrentSkill = noAtk;
             #endregion
             #endregion

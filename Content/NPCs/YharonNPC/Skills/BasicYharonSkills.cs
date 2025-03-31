@@ -1,4 +1,5 @@
-﻿using CalamityYharonChange.Core.SkillsNPC;
+﻿using CalamityYharonChange.Content.UIs;
+using CalamityYharonChange.Core.SkillsNPC;
 using Microsoft.Xna.Framework.Graphics;
 using System;
 using System.Collections.Generic;
@@ -20,12 +21,15 @@ namespace CalamityYharonChange.Content.NPCs.YharonNPC.Skills
             base.OnSkillActive(activeSkill);
             SkillTimeOut = false;
             NPC.ai[0] = NPC.ai[1] = NPC.ai[2] = NPC.ai[3] = 0;
+            NPC.localAI[0] = NPC.localAI[1] = NPC.localAI[2] = NPC.localAI[3] = 0;
         }
         public override void OnSkillDeactivate(NPCSkills changeToSkill)
         {
             base.OnSkillDeactivate(changeToSkill);
             SkillTimeOut = false;
             NPC.ai[0] = NPC.ai[1] = NPC.ai[2] = NPC.ai[3] = 0;
+            NPC.localAI[0] = NPC.localAI[1] = NPC.localAI[2] = NPC.localAI[3] = 0;
+            SkillTimeUI.Active = false;
         }
         public override bool PreDraw(SpriteBatch spriteBatch, Vector2 screenPos, Color drawColor)
         {

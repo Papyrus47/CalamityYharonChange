@@ -40,8 +40,6 @@ namespace CalamityYharonChange.Content.NPCs.YharonNPC.Skills.General
         public Dash(NPC npc, int dashTime, int dashSpeed) : base(npc)
         {
             DashTime = dashTime;
-            if (DashTime < 60)
-                DashTime = 60;
             DashSpeed = dashSpeed;
         }
         public override void AI()
@@ -61,7 +59,7 @@ namespace CalamityYharonChange.Content.NPCs.YharonNPC.Skills.General
                         NPC.ai[1] = 0;
                         NPC.ai[0] = (int)DashState.Dash;
                         NPC.velocity = vel * DashSpeed;
-                        if(DashTime <= 30)
+                        if(DashTime > 30)
                         {
                             SoundEngine.PlaySound(Yharon.RoarSound, NPC.Center);
                         }

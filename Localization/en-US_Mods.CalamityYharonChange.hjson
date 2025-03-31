@@ -5,6 +5,7 @@ Projectiles: {
 	YharonRoarWave.DisplayName: Yharon Roar Wave
 	Misc.YharonRoarWave.DisplayName: Yharon Roar Wave
 	YharonBoomProj.DisplayName: Yharon Boom Proj
+	YharonWind.DisplayName: Yharon Wind
 }
 
 Buffs: {
@@ -13,3 +14,5 @@ Buffs: {
 		Description: 你在试图逃跑？
 	}
 }
+
+SkillName.Wind: 旋风

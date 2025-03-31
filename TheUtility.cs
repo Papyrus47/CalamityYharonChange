@@ -131,6 +131,15 @@
         /// </summary>
         /// <param name="key"></param>
         /// <returns></returns>
+        public static LocalizedText RegisterTextBySkill(string key)
+        {
+            return Language.GetOrRegister("Mods.CalamityYharonChange.SkillName." + key, () => key);
+        }
+        /// <summary>
+        /// 用这个注册文本，自动带上前缀
+        /// </summary>
+        /// <param name="key"></param>
+        /// <returns></returns>
         public static LocalizedText RegisterTextByPrefix(string key)
         {
             return Language.GetOrRegister("Mods.CalamityYharonChange." + key, () => key);

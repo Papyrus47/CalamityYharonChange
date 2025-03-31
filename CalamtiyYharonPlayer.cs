@@ -16,6 +16,11 @@ namespace CalamityYharonChange
         /// 炼狱龙炎
         /// </summary>
         public bool hellDragonFire;
+        /// <summary>
+        /// 撕裂buff
+        /// </summary>
+        public bool flyWind;
+        public int PlayerFly;
         public override void ResetEffects()
         {
             hellDragonFire = false;
@@ -52,6 +57,16 @@ namespace CalamityYharonChange
         public override void UpdateBadLifeRegen()
         {
             ApplyDoTDebuff(hellDragonFire, 200);
+            ApplyDoTDebuff(hellDragonFire, 100);
+        }
+        public override void PreUpdateMovement()
+        {
+            base.PreUpdateMovement();
+            if(PlayerFly > 0)
+            {
+                PlayerFly--;
+                Player.velocity.Y = -30f;
+            }
         }
         void ApplyDoTDebuff(bool hasDebuff, int negativeLifeRegenToApply, bool immuneCondition = false)
         {
