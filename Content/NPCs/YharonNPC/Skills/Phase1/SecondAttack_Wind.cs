@@ -24,7 +24,7 @@ namespace CalamityYharonChange.Content.NPCs.YharonNPC.Skills.Phase1
             NPC.spriteDirection = NPC.direction = (vel.X > 0).ToDirectionInt();
             NPC.velocity += vel;
             NPC.rotation = NPC.velocity.ToRotation();
-            NPC.velocity *= 0.9f;
+            NPC.velocity *= 0f;
             if (NPC.spriteDirection == -1)
                 NPC.rotation += MathHelper.Pi;
             SkillTimeUI.SkillTimeMax = 180;

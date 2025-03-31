@@ -13,6 +13,11 @@ Buffs: {
 		DisplayName: 炼狱龙炎
 		Description: 你在试图逃跑？
 	}
+
+	FlyWind: {
+		DisplayName: Fly Wind
+		Description: Mods.CalamityYharonChange.Buffs.FlyWind.Description
+	}
 }
 
 SkillName.Wind: 旋风
