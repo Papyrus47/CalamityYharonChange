@@ -49,7 +49,7 @@ namespace CalamityYharonChange.Content.Projs.Bosses.Yharon
         }
         public override void OnHitPlayer(Player target, Player.HurtInfo info)
         {
-            target.Yharon().PlayerFly = 30;
+            target.Yharon().PlayerFly = 10;
             target.AddBuff(ModContent.BuffType<FlyWind>(),3600);
         }
         public override bool PreDraw(ref Color lightColor)

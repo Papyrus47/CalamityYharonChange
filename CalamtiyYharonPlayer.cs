@@ -65,7 +65,14 @@ namespace CalamityYharonChange
             if(PlayerFly > 0)
             {
                 PlayerFly--;
-                Player.velocity.Y = -30f;
+                Player.velocity.Y = -90f;
+            }
+            if (YharonChangeSystem.YharonBoss != -1)
+            {
+                if (Math.Abs(Player.Center.X - YharonChangeSystem.YharonFixedPos.X) > 960 || Math.Abs(Player.Center.Y - YharonChangeSystem.YharonFixedPos.Y) > 4000)
+                {
+                    Player.velocity += (YharonChangeSystem.YharonFixedPos - Player.Center).SafeNormalize(default);
+                }
             }
         }
         void ApplyDoTDebuff(bool hasDebuff, int negativeLifeRegenToApply, bool immuneCondition = false)
