@@ -37,13 +37,18 @@ namespace CalamityYharonChange.Content.Projs.Bosses.Yharon
                     Projectile.damage /= 6;
                 else if (Main.expertMode)
                     Projectile.damage /= 4;
-                Projectile.scale += 0.1f / 12.75f;
                 int size = (int)(408 * Projectile.scale);
                 Projectile.Resize(size, size);
                 if(Projectile.scale > 5 / 12.75f)
                 {
-                    Projectile.Kill();
+                    Projectile.ai[1]++;
+                    if (Projectile.ai[1] > 10)
+                        Projectile.Kill();
                     // 这里添加音效
+                }
+                else
+                {
+                    Projectile.scale += 0.1f / 12.75f;
                 }
             }
         }

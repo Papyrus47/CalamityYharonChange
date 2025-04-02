@@ -42,7 +42,7 @@ namespace CalamityYharonChange.Content.NPCs.YharonNPC.Skills.Phase1
             }
         }
         public override bool ActivationCondition(NPCSkills activeSkill) => true;
-        public override bool SwitchCondition(NPCSkills changeToSkill) => NPC.ai[0] > 200;
+        public override bool SwitchCondition(NPCSkills changeToSkill) => NPC.ai[0] > 200 && base.SwitchCondition(changeToSkill);
         public override void OnSkillActive(NPCSkills activeSkill)
         {
             base.OnSkillActive(activeSkill);
@@ -52,7 +52,7 @@ namespace CalamityYharonChange.Content.NPCs.YharonNPC.Skills.Phase1
         {
             if (NPC.ai[0] < 180)
             {
-                NPC.frame.Y = ((int)NPC.ai[0] / 4 % 5) * frameHeight;
+                NPC.frame.Y = ((int)NPC.ai[0] / 8 % 5) * frameHeight;
             }
             else
             {

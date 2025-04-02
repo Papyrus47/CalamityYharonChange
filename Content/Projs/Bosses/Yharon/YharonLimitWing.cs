@@ -15,7 +15,7 @@ namespace CalamityYharonChange.Content.Projs.Bosses.Yharon
         public override void SetStaticDefaults()
         {
             base.SetStaticDefaults();
-            ProjectileID.Sets.DrawScreenCheckFluff[Type] = 100000000;
+            ProjectileID.Sets.DrawScreenCheckFluff[Type] = 1000000000;
         }
         public override void SetDefaults()
         {

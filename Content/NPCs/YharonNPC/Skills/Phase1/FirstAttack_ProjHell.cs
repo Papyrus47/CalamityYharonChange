@@ -70,7 +70,7 @@ namespace CalamityYharonChange.Content.NPCs.YharonNPC.Skills.Phase1
             DrawBall(spriteBatch, screenPos);
             return false;
         }
-        public override bool SwitchCondition(NPCSkills changeToSkill) => (NPC.ai[0] - 20) / 60 > 9;
+        public override bool SwitchCondition(NPCSkills changeToSkill) => (NPC.ai[0] - 20) / 60 > 9 && base.SwitchCondition(changeToSkill);
         public override bool ActivationCondition(NPCSkills activeSkill) => true; // 只要上个技能满足切换条件就允许切换该技能
     }
 }

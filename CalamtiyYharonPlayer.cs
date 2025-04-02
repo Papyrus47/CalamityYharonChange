@@ -24,10 +24,12 @@ namespace CalamityYharonChange
         public override void ResetEffects()
         {
             hellDragonFire = false;
+            flyWind = false;
         }
         public override void UpdateDead()
         {
             hellDragonFire = false;
+            flyWind = false;
         }
         public override void PreUpdate()
         {
@@ -43,7 +45,7 @@ namespace CalamityYharonChange
         {
             if (hellDragonFire)
             {
-                damageSource = PlayerDeathReason.ByCustomReason(CalamityUtils.GetText("Status.Death.Dragonfire" + Main.rand.Next(1, 5)).Format(base.Player.name));
+                damageSource = PlayerDeathReason.ByCustomReason(NetworkText.FromLiteral(CalamityUtils.GetText("Status.Death.Dragonfire" + Main.rand.Next(1, 5)).Format(base.Player.name)));
             }
             return base.PreKill(damage, hitDirection, pvp, ref playSound, ref genDust, ref damageSource);
         }
@@ -57,7 +59,7 @@ namespace CalamityYharonChange
         public override void UpdateBadLifeRegen()
         {
             ApplyDoTDebuff(hellDragonFire, 200);
-            ApplyDoTDebuff(hellDragonFire, 100);
+            ApplyDoTDebuff(flyWind, 100);
         }
         public override void PreUpdateMovement()
         {

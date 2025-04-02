@@ -43,6 +43,7 @@ namespace CalamityYharonChange.Content.NPCs.YharonNPC
         public static int YharonBoomProj;
         public static int YharonRoarWave;
         public static int YharonWind;
+        public static int YharonFire;
         public override void SetStaticDefaults()
         {
             base.SetStaticDefaults();
@@ -73,8 +74,10 @@ namespace CalamityYharonChange.Content.NPCs.YharonNPC
             YharonBoomProj = ModContent.ProjectileType<YharonBoomProj>();
             YharonRoarWave = ModContent.ProjectileType<YharonRoarWave>();
             YharonWind = ModContent.ProjectileType<YharonWind>();
+            YharonFire = ModContent.ProjectileType<YharonFire>();
 
             EnemyStats.ProjectileDamageValues.Add(new Tuple<int, int>(Type, ModContent.ProjectileType<FlareBomb>()), new int[5] { 300, 300, 300, 300, 300 }); // 添加弹幕伤害
+            EnemyStats.ProjectileDamageValues.Add(new Tuple<int, int>(Type, ModContent.ProjectileType<YharonFire>()), new int[5] { 300, 300, 300, 300, 300 }); // 添加弹幕伤害
             EnemyStats.ProjectileDamageValues.Add(new Tuple<int, int>(Type, ModContent.ProjectileType<YharonBoomProj>()), new int[5] { 300, 300, 300, 300, 300 }); // 添加弹幕伤害
         }
         public override void SetDefaults()
@@ -147,7 +150,7 @@ namespace CalamityYharonChange.Content.NPCs.YharonNPC
             #endregion
             #region 技能
             #region 第一阶段
-            NoAtk noAtk = new(NPC);
+            Phase1NoAtk noAtk = new(NPC);
             
             FirstAttack_ProjHell firstAttack_ProjHell = new(NPC);
 
@@ -158,9 +161,11 @@ namespace CalamityYharonChange.Content.NPCs.YharonNPC
                 OnDashAI = (_) => NPC.dontTakeDamage = false
             };
             Dash firstAttack_dash_2 = new(NPC, 30, 35);
+            DashSystem firstAttack_dashSystem = new(NPC, new List<Dash>() { firstAttack_dash_1, firstAttack_dash_2 });
+            FourthAttack_SP_Dash fourthAttack_SP_Dash = new(NPC);
 
-            SkillNPC.Register(noAtk, firstAttack_ProjHell,firstAttack_dash_1,firstAttack_dash_2, secondAttack_Wind); // 注册技能
-            noAtk.AddSkill(firstAttack_ProjHell).AddSkill(secondAttack_Wind).AddSkill(firstAttack_dash_1).AddSkill(firstAttack_dash_2).AddSkill(firstAttack_ProjHell); // 技能链
+            SkillNPC.Register(noAtk, firstAttack_ProjHell,firstAttack_dash_1,firstAttack_dash_2, secondAttack_Wind, firstAttack_dashSystem, fourthAttack_SP_Dash); // 注册技能
+            noAtk.AddSkill(firstAttack_ProjHell).AddSkill(secondAttack_Wind).AddSkill(firstAttack_dashSystem).AddSkill(fourthAttack_SP_Dash).AddSkill(fourthAttack_SP_Dash); // 技能链
             CurrentSkill = noAtk;
             #endregion
             #endregion

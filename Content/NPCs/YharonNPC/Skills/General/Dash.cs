@@ -21,7 +21,7 @@ namespace CalamityYharonChange.Content.NPCs.YharonNPC.Skills.General
         /// 冲刺速度
         /// </summary>
         public int DashSpeed = 10;
-        public enum DashState : int
+        public enum DashMode : int
         {
             /// <summary>
             /// 等待
@@ -36,6 +36,7 @@ namespace CalamityYharonChange.Content.NPCs.YharonNPC.Skills.General
             /// </summary>
             End
         }
+        public DashMode DashState { get => (DashMode)NPC.ai[0]; set => NPC.ai[0] = (int)value; }
         public Action<Dash> OnDashAI;
         public Dash(NPC npc, int dashTime, int dashSpeed) : base(npc)
         {
@@ -44,9 +45,9 @@ namespace CalamityYharonChange.Content.NPCs.YharonNPC.Skills.General
         }
         public override void AI()
         {
-            switch ((DashState)NPC.ai[0])
+            switch (DashState)
             {
-                case DashState.Wait:
+                case DashMode.Wait:
                     Vector2 vel = (Target.Center - NPC.Center).SafeNormalize(default);
                     NPC.spriteDirection = NPC.direction = (vel.X > 0).ToDirectionInt();
                     NPC.velocity += vel;
@@ -57,7 +58,7 @@ namespace CalamityYharonChange.Content.NPCs.YharonNPC.Skills.General
                     if (NPC.ai[1] > 1)
                     {
                         NPC.ai[1] = 0;
-                        NPC.ai[0] = (int)DashState.Dash;
+                        DashState = DashMode.Dash;
                         NPC.velocity = vel * DashSpeed;
                         if(DashTime > 30)
                         {
@@ -69,24 +70,24 @@ namespace CalamityYharonChange.Content.NPCs.YharonNPC.Skills.General
                         }
                     }
                     break;
-                case DashState.Dash:
+                case DashMode.Dash:
                     OnDashAI?.Invoke(this);
                     NPC.ai[1]++;
                     if (NPC.ai[1] > DashTime)
                     {
                         NPC.ai[1] = 0;
-                        NPC.ai[0] = (int)DashState.End;
+                        DashState = DashMode.End;
                     }
                     break;
             }
         }
-        public override bool SwitchCondition(NPCSkills changeToSkill) => (DashState)NPC.ai[0] == DashState.End;
+        public override bool SwitchCondition(NPCSkills changeToSkill) => (DashMode)NPC.ai[0] == DashMode.End;
         public override bool ActivationCondition(NPCSkills activeSkill) => true;
         public override void FindFrame(int frameHeight)
         {
-            switch ((DashState)NPC.ai[0])
+            switch ((DashMode)NPC.ai[0])
             {
-                case DashState.Wait:
+                case DashMode.Wait:
                     if(NPC.frameCounter++ > 4)
                     {
                         NPC.frameCounter = 0;
@@ -98,14 +99,15 @@ namespace CalamityYharonChange.Content.NPCs.YharonNPC.Skills.General
                         }
                     }
                     break;
-                case DashState.Dash:
+                case DashMode.Dash:
                     NPC.frame.Y = 0;
                     break;
             }
         }
         public override bool PreDraw(SpriteBatch spriteBatch, Vector2 screenPos, Color drawColor)
         {
-            DrawAfterimage(spriteBatch, screenPos);
+            if(DashState == DashMode.Dash)
+                DrawAfterimage(spriteBatch, screenPos);
             base.PreDraw(spriteBatch, screenPos, drawColor);
             return false;
         }

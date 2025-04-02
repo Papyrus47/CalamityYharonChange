@@ -13,9 +13,6 @@
 	  </Reference>
 	</ItemGroup>
 	<ItemGroup>
-	  <Folder Include="Assets\Effects\" />
-	</ItemGroup>
-	<ItemGroup>
 		<Publicize Include="CalamityMod" IncludeVirtualMembers="false" />
 	</ItemGroup>
 	<ItemGroup>

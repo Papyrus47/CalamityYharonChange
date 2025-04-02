@@ -6,6 +6,7 @@ Projectiles: {
 	Misc.YharonRoarWave.DisplayName: Yharon Roar Wave
 	YharonBoomProj.DisplayName: Yharon Boom Proj
 	YharonWind.DisplayName: Yharon Wind
+	YharonFire.DisplayName: Yharon Fire
 }
 
 Buffs: {
@@ -20,4 +21,12 @@ Buffs: {
 	}
 }
 
-SkillName.Wind: 旋风
+SkillName: {
+	Wind: 旋风
+	FrontZhua: 前爪
+	BackZhua: 后爪
+	Moon: 月华
+	Iron: 钢铁
+	FireWing: 烈翼旋风冲
+	FireTrail: 烈尾旋风冲
+}

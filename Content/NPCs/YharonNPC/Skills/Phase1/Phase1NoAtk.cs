@@ -11,9 +11,9 @@ namespace CalamityYharonChange.Content.NPCs.YharonNPC.Skills.Phase1
     /// <summary>
     /// 没有攻击行为的开场
     /// </summary>
-    public class NoAtk : BasicPhase1Skills
+    public class Phase1NoAtk : BasicPhase1Skills
     {
-        public NoAtk(NPC npc) : base(npc)
+        public Phase1NoAtk(NPC npc) : base(npc)
         {
         }
         public override void AI()
