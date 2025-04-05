@@ -83,8 +83,6 @@ namespace CalamityYharonChange.Core.Particles
         public virtual void Draw() 
         {
             SpriteBatch sb = Main.spriteBatch;
-            sb.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, Main.DefaultSamplerState, DepthStencilState.None,
-                Main.Rasterizer, null, Main.GameViewMatrix.TransformationMatrix);
             if (PreDraw(sb))
             {
                 if (!Texture.IsLoaded)
@@ -93,7 +91,6 @@ namespace CalamityYharonChange.Core.Particles
                 sb.Draw(texture, position - Main.screenPosition, null, color, rotation, texture.Size() * 0.5f, scale, SpriteEffects.None, 0f);
             }
             PostDraw(sb);
-            sb.End();
         }
         /// <summary>
         /// 调用在的末尾<see cref="Update"/>

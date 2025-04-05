@@ -17,11 +17,14 @@
             orig.Invoke(self);
             if (partcle.TryGetValue(BasicPartcle.DrawLayer.AfterPlayer, out List<BasicPartcle> value))
             {
+                Main.spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, Main.DefaultSamplerState, DepthStencilState.None,
+                Main.Rasterizer, null, Main.GameViewMatrix.TransformationMatrix);
                 for (int i = 0; i < value.Count; i++) // 遍历每一个粒子
                 {
                     BasicPartcle partcle = value[i];
                     partcle.Draw();
                 }
+                Main.spriteBatch.End();
             }
         }
 
@@ -30,11 +33,14 @@
             orig.Invoke(self, solidLayer, forRenderTargets, intoRenderTargets, waterStyleOverride);
             if (partcle.TryGetValue(BasicPartcle.DrawLayer.AfterTile, out List<BasicPartcle> value))
             {
+                Main.spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, Main.DefaultSamplerState, DepthStencilState.None,
+                Main.Rasterizer, null, Main.GameViewMatrix.TransformationMatrix);
                 for (int i = 0; i < value.Count; i++) // 遍历每一个粒子
                 {
                     BasicPartcle partcle = value[i];
                     partcle.Draw();
                 }
+                Main.spriteBatch.End();
             }
         }
 
@@ -43,11 +49,14 @@
             orig.Invoke(self);
             if (partcle.TryGetValue(BasicPartcle.DrawLayer.AfterProj, out List<BasicPartcle> value))
             {
+                Main.spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, Main.DefaultSamplerState, DepthStencilState.None,
+                Main.Rasterizer, null, Main.GameViewMatrix.TransformationMatrix);
                 for (int i = 0; i < value.Count; i++) // 遍历每一个粒子
                 {
                     BasicPartcle partcle = value[i];
                     partcle.Draw();
                 }
+                Main.spriteBatch.End();
             }
         }
 
@@ -56,11 +65,14 @@
             orig.Invoke(self);
             if (partcle.TryGetValue(BasicPartcle.DrawLayer.AfterDust, out List<BasicPartcle> value))
             {
+                Main.spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, Main.DefaultSamplerState, DepthStencilState.None,
+                Main.Rasterizer, null, Main.GameViewMatrix.TransformationMatrix);
                 for (int i = 0; i < value.Count; i++) // 遍历每一个粒子
                 {
                     BasicPartcle partcle = value[i];
                     partcle.Draw();
                 }
+                Main.spriteBatch.End();
             }
         }
 
@@ -91,13 +103,17 @@
                     }
                 }
             }
-            foreach(var layer in partclesRemoveCeche.Keys)
+            try
             {
-                foreach(var partcle in partclesRemoveCeche[layer])
+                foreach (var layer in partclesRemoveCeche.Keys)
                 {
-                    PartclesSystem.partcle[layer].RemoveAt(partcle);
+                    foreach (var partcle in partclesRemoveCeche[layer])
+                    {
+                        PartclesSystem.partcle[layer].RemoveAt(partcle);
+                    }
                 }
             }
+            catch { }
         }
         public static void AddPartcle(BasicPartcle.DrawLayer drawLayer, BasicPartcle partcle)
         {

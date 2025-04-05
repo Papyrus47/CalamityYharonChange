@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace CalamityYharonChange.Content.Projs.Bosses.Yharon
 {
-    public class YharonBoomProj : ModProjectile
+    public class YharonNormalBoomProj : ModProjectile
     {
         public override void SetStaticDefaults()
         {

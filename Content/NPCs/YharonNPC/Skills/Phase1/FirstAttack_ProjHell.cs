@@ -30,7 +30,7 @@ namespace CalamityYharonChange.Content.NPCs.YharonNPC.Skills.Phase1
 
                 Target.AddBuff(ModContent.BuffType<Dragonfire>(), 300);
             }
-            int type = YharonNPC.YharonBoomProj;
+            int type = YharonNPC.YharonNormalBoomProj;
             if ((int)NPC.ai[0] % 60 == 0)
             {
                 int lenght = (int)(NPC.ai[0] / 60) + 1; // 距离

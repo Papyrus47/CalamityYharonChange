@@ -7,6 +7,10 @@ Projectiles: {
 	YharonBoomProj.DisplayName: Yharon Boom Proj
 	YharonWind.DisplayName: Yharon Wind
 	YharonFire.DisplayName: Yharon Fire
+	YharonDustBoom.DisplayName: Yharon Dust Boom
+	YharonFireBoom.DisplayName: Yharon Fire Boom
+	YharonNormalBoomProj.DisplayName: Yharon Normal Boom Proj
+	YharonMoonLighting.DisplayName: Yharon Moon Lighting
 }
 
 Buffs: {

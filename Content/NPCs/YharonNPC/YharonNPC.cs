@@ -40,10 +40,15 @@ namespace CalamityYharonChange.Content.NPCs.YharonNPC
         public static int Phase1Music;
 
         public static int FlareBomb;
-        public static int YharonBoomProj;
+        public static int YharonNormalBoomProj;
         public static int YharonRoarWave;
         public static int YharonWind;
         public static int YharonFire;
+        public static int YharonDustBoom;
+        public static int YharonFireBoom;
+        public static int YharonMoonLighting;
+        public readonly int MusicTimerPhase1 = 100 * 60;
+        public int MusicTimer;
         public override void SetStaticDefaults()
         {
             base.SetStaticDefaults();
@@ -71,14 +76,20 @@ namespace CalamityYharonChange.Content.NPCs.YharonNPC
             Phase1Music = MusicLoader.GetMusicSlot("CalamityYharonChange/Assets/Sounds/Music/YharonPhase1");
 
             FlareBomb = ModContent.ProjectileType<FlareBomb>();
-            YharonBoomProj = ModContent.ProjectileType<YharonBoomProj>();
+            YharonNormalBoomProj = ModContent.ProjectileType<YharonNormalBoomProj>();
             YharonRoarWave = ModContent.ProjectileType<YharonRoarWave>();
             YharonWind = ModContent.ProjectileType<YharonWind>();
             YharonFire = ModContent.ProjectileType<YharonFire>();
+            YharonDustBoom = ModContent.ProjectileType<YharonDustBoom>();
+            YharonFireBoom = ModContent.ProjectileType<YharonFireBoom>();
+            YharonMoonLighting = ModContent.ProjectileType<YharonMoonLighting>();
 
             EnemyStats.ProjectileDamageValues.Add(new Tuple<int, int>(Type, ModContent.ProjectileType<FlareBomb>()), new int[5] { 300, 300, 300, 300, 300 }); // 添加弹幕伤害
             EnemyStats.ProjectileDamageValues.Add(new Tuple<int, int>(Type, ModContent.ProjectileType<YharonFire>()), new int[5] { 300, 300, 300, 300, 300 }); // 添加弹幕伤害
-            EnemyStats.ProjectileDamageValues.Add(new Tuple<int, int>(Type, ModContent.ProjectileType<YharonBoomProj>()), new int[5] { 300, 300, 300, 300, 300 }); // 添加弹幕伤害
+            EnemyStats.ProjectileDamageValues.Add(new Tuple<int, int>(Type, ModContent.ProjectileType<YharonNormalBoomProj>()), new int[5] { 300, 300, 300, 300, 300 }); // 添加弹幕伤害
+            EnemyStats.ProjectileDamageValues.Add(new Tuple<int, int>(Type, ModContent.ProjectileType<YharonDustBoom>()), new int[5] { 300, 300, 300, 300, 300 }); // 添加弹幕伤害
+            EnemyStats.ProjectileDamageValues.Add(new Tuple<int, int>(Type, ModContent.ProjectileType<YharonFireBoom>()), new int[5] { 300, 300, 300, 300, 300 }); // 添加弹幕伤害
+            EnemyStats.ProjectileDamageValues.Add(new Tuple<int, int>(Type, ModContent.ProjectileType<YharonMoonLighting>()), new int[5] { 300, 300, 300, 300, 300 }); // 添加弹幕伤害
         }
         public override void SetDefaults()
         {
@@ -118,6 +129,7 @@ namespace CalamityYharonChange.Content.NPCs.YharonNPC
         }
         public override void AI()
         {
+            MusicTimer++;
             CalamityGlobalNPC calamityGlobalNPC = NPC.Calamity();
             calamityGlobalNPC.DR = normalDR;
             calamityGlobalNPC.CurrentlyIncreasingDefenseOrDR = true;
@@ -146,7 +158,8 @@ namespace CalamityYharonChange.Content.NPCs.YharonNPC
             YharonPhase1 yharonPhase1 = new YharonPhase1(NPC);
 
             SkillNPC.Register(yharonPhase1);
-            CurrentMode = yharonPhase1;
+            yharonPhase1.OnEnterMode();
+            CurrentMode = yharonPhase1; 
             #endregion
             #region 技能
             #region 第一阶段
@@ -165,7 +178,7 @@ namespace CalamityYharonChange.Content.NPCs.YharonNPC
             FourthAttack_SP_Dash fourthAttack_SP_Dash = new(NPC);
 
             SkillNPC.Register(noAtk, firstAttack_ProjHell,firstAttack_dash_1,firstAttack_dash_2, secondAttack_Wind, firstAttack_dashSystem, fourthAttack_SP_Dash); // 注册技能
-            noAtk.AddSkill(firstAttack_ProjHell).AddSkill(secondAttack_Wind).AddSkill(firstAttack_dashSystem).AddSkill(fourthAttack_SP_Dash).AddSkill(fourthAttack_SP_Dash); // 技能链
+            noAtk.AddSkill(firstAttack_ProjHell).AddSkill(secondAttack_Wind).AddSkill(firstAttack_dashSystem).AddSkill(fourthAttack_SP_Dash).AddSkill(firstAttack_ProjHell); // 技能链
             CurrentSkill = noAtk;
             #endregion
             #endregion

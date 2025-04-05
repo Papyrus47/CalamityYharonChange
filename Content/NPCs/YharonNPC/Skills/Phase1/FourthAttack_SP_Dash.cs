@@ -109,7 +109,7 @@ namespace CalamityYharonChange.Content.NPCs.YharonNPC.Skills.Phase1
                 case DashMode.End:
                     NPC.velocity *= 0.6f;
                     #region 前后爪
-                    if ((int)NPC.ai[1] >= 90 && NPC.ai[1] < 95)
+                    if ((int)NPC.ai[1] == 90)
                     {
                         if (UseInvertSkill[0])
                         {
@@ -143,13 +143,16 @@ namespace CalamityYharonChange.Content.NPCs.YharonNPC.Skills.Phase1
                     }
                     #endregion
                     #region 月华/钢铁
-                    if (UseInvertSkill[1])
+                    if ((int)NPC.ai[1] == 90)
                     {
-
-                    }
-                    else
-                    {
-
+                        if (UseInvertSkill[1]) // 月华
+                        {
+                            var proj = Projectile.NewProjectileDirect(NPC.GetSource_FromAI(), NPC.Center, Vector2.Zero, YharonNPC.YharonMoonLighting, NPC.GetProjectileDamage(YharonNPC.YharonMoonLighting), 0f, Target.whoAmI, 400f,4000);
+                        }
+                        else // 钢铁
+                        {
+                            var proj = Projectile.NewProjectileDirect(NPC.GetSource_FromAI(), NPC.Center, Vector2.Zero, YharonNPC.YharonFireBoom, NPC.GetProjectileDamage(YharonNPC.YharonFireBoom), 0f, Target.whoAmI, 4f);
+                        }
                     }
                     #endregion
                     if (NPC.ai[1]++ > 150)
