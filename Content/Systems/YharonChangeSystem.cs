@@ -35,6 +35,8 @@ namespace CalamityYharonChange.Content.Systems
             }
             if (CleanYharonBoss)
                 YharonBoss = -1;
+            else
+                Main.playerInventory = false;
         }
     }
 }

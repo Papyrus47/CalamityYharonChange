@@ -1,4 +1,5 @@
-﻿using CalamityYharonChange.Content.NPCs.Dusts;
+﻿using CalamityMod;
+using CalamityYharonChange.Content.NPCs.Dusts;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,6 +10,10 @@ namespace CalamityYharonChange.Content.Projs.Bosses.Yharon
 {
     public class YharonFire : ModProjectile
     {
+        /// <summary>
+        /// 瞬间秒杀玩家
+        /// </summary>
+        public bool IsKillPlayer;
         public override void SetDefaults()
         {
             Projectile.penetrate = -1;
@@ -35,6 +40,12 @@ namespace CalamityYharonChange.Content.Projs.Bosses.Yharon
         public override bool PreDraw(ref Color lightColor)
         {
             return false;
+        }
+        public override void ModifyHitPlayer(Player target, ref Player.HurtModifiers modifiers)
+        {
+            base.ModifyHitPlayer(target, ref modifiers);
+            if (IsKillPlayer)
+                target.KillMe(PlayerDeathReason.ByCustomReason(NetworkText.FromLiteral(CalamityUtils.GetText("Status.Death.Dragonfire" + Main.rand.Next(1, 5)).Format(target.name))),10.0,1);
         }
     }
 }

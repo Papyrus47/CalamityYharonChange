@@ -2,11 +2,11 @@ NPCs.YharonNPC.DisplayName: 重生之龙·犽戎
 
 Projectiles: {
 	YharonLimitWing.DisplayName: 限制圈
-	YharonRoarWave.DisplayName: Yharon Roar Wave
-	Misc.YharonRoarWave.DisplayName: Yharon Roar Wave
-	YharonBoomProj.DisplayName: Yharon Boom Proj
-	YharonWind.DisplayName: Yharon Wind
-	YharonFire.DisplayName: Yharon Fire
+	YharonRoarWave.DisplayName: 丛林龙吼波
+	Misc.YharonRoarWave.DisplayName: 丛林龙吼波
+	YharonBoomProj.DisplayName: 爆炸
+	YharonWind.DisplayName: 旋风
+	YharonFire.DisplayName: Yharon之火
 	YharonDustBoom.DisplayName: Yharon Dust Boom
 	YharonFireBoom.DisplayName: Yharon Fire Boom
 	YharonNormalBoomProj.DisplayName: Yharon Normal Boom Proj
@@ -33,4 +33,5 @@ SkillName: {
 	Iron: 钢铁
 	FireWing: 烈翼旋风冲
 	FireTrail: 烈尾旋风冲
+	HellFire: 地狱之火炎
 }

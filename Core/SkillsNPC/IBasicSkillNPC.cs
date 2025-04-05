@@ -65,6 +65,7 @@ namespace CalamityYharonChange.Core.SkillsNPC
                     targetSkill.OnSkillActive(CurrentSkill);
                     CurrentSkill.OnSkillDeactivate(targetSkill);
                     CurrentSkill = targetSkill;
+                    break;
                 }
             }
         }

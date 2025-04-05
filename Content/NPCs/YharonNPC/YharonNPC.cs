@@ -9,6 +9,7 @@ using CalamityYharonChange.Content.NPCs.YharonNPC.Skills.Phase1;
 using CalamityYharonChange.Content.Projs.Bosses.Yharon;
 using CalamityYharonChange.Content.Skys;
 using CalamityYharonChange.Content.Systems;
+using CalamityYharonChange.Core;
 using CalamityYharonChange.Core.SkillsNPC;
 using System.Collections.Generic;
 using Terraria;
@@ -47,8 +48,8 @@ namespace CalamityYharonChange.Content.NPCs.YharonNPC
         public static int YharonDustBoom;
         public static int YharonFireBoom;
         public static int YharonMoonLighting;
-        public readonly int MusicTimerPhase1 = 100 * 60;
-        public int MusicTimer;
+        public readonly int MusicTimerPhase1 = 107 * 60;
+        public MusicSupport musicSupport;
         public override void SetStaticDefaults()
         {
             base.SetStaticDefaults();
@@ -118,6 +119,7 @@ namespace CalamityYharonChange.Content.NPCs.YharonNPC
             NPC.Calamity().VulnerableToCold = true;
             NPC.Calamity().VulnerableToSickness = true;
             Music = Phase1Music;
+            musicSupport = new(105, 0);
         }
         public override bool CheckActive() => false;
         public override void SetBestiary(BestiaryDatabase database, BestiaryEntry bestiaryEntry)
@@ -127,9 +129,14 @@ namespace CalamityYharonChange.Content.NPCs.YharonNPC
                 new FlavorTextBestiaryInfoElement("Mods.CalamityMod.Bestiary.Yharon")
             });
         }
+        public override void PostDraw(SpriteBatch spriteBatch, Vector2 screenPos, Color drawColor)
+        {
+            base.PostDraw(spriteBatch, screenPos, drawColor);
+            //MusicTimer++;
+        }
         public override void AI()
         {
-            MusicTimer++;
+            musicSupport.Update();
             CalamityGlobalNPC calamityGlobalNPC = NPC.Calamity();
             calamityGlobalNPC.DR = normalDR;
             calamityGlobalNPC.CurrentlyIncreasingDefenseOrDR = true;
@@ -174,11 +181,14 @@ namespace CalamityYharonChange.Content.NPCs.YharonNPC
                 OnDashAI = (_) => NPC.dontTakeDamage = false
             };
             Dash firstAttack_dash_2 = new(NPC, 30, 35);
-            DashSystem firstAttack_dashSystem = new(NPC, new List<Dash>() { firstAttack_dash_1, firstAttack_dash_2 });
+            DashSystem thirdAttack_dashSystem = new(NPC, new List<Dash>() { firstAttack_dash_1, firstAttack_dash_2 });
             FourthAttack_SP_Dash fourthAttack_SP_Dash = new(NPC);
 
-            SkillNPC.Register(noAtk, firstAttack_ProjHell,firstAttack_dash_1,firstAttack_dash_2, secondAttack_Wind, firstAttack_dashSystem, fourthAttack_SP_Dash); // 注册技能
-            noAtk.AddSkill(firstAttack_ProjHell).AddSkill(secondAttack_Wind).AddSkill(firstAttack_dashSystem).AddSkill(fourthAttack_SP_Dash).AddSkill(firstAttack_ProjHell); // 技能链
+            Phase1FinallyAttack phase1FinallyAttack = new(NPC);
+
+            SkillNPC.Register(noAtk, firstAttack_ProjHell,firstAttack_dash_1,firstAttack_dash_2, secondAttack_Wind, thirdAttack_dashSystem, fourthAttack_SP_Dash, phase1FinallyAttack); // 注册技能
+            phase1FinallyAttack.AddBySkilles(firstAttack_ProjHell, secondAttack_Wind, thirdAttack_dashSystem, fourthAttack_SP_Dash);
+            noAtk.AddSkill(firstAttack_ProjHell).AddSkill(secondAttack_Wind).AddSkill(thirdAttack_dashSystem).AddSkill(fourthAttack_SP_Dash).AddSkill(firstAttack_ProjHell); // 技能链
             CurrentSkill = noAtk;
             #endregion
             #endregion

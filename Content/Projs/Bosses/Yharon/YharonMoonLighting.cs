@@ -85,8 +85,8 @@ namespace CalamityYharonChange.Content.Projs.Bosses.Yharon
             Color color = Color.LightBlue with { A = 0 };
             for (int i = 0; i < length; i++)
             {
-                if (Projectile.timeLeft % 2 != 0)
-                    break;
+                //if (Projectile.timeLeft % 2 != 0)
+                //    break;
                 List<CustomVertexInfo> vertex = new();
                 vertexInfo.Add(vertex);
                 for (int j = 1; j < lightings[i].points.Length; j++)
