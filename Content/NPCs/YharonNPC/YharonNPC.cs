@@ -48,7 +48,7 @@ namespace CalamityYharonChange.Content.NPCs.YharonNPC
         public static int YharonDustBoom;
         public static int YharonFireBoom;
         public static int YharonMoonLighting;
-        public readonly int MusicTimerPhase1 = 107 * 60;
+        public readonly int MusicTimerPhase1 = 53;
         public MusicSupport musicSupport;
         public override void SetStaticDefaults()
         {
@@ -119,9 +119,19 @@ namespace CalamityYharonChange.Content.NPCs.YharonNPC
             NPC.Calamity().VulnerableToCold = true;
             NPC.Calamity().VulnerableToSickness = true;
             Music = Phase1Music;
-            musicSupport = new(105, 0);
+            musicSupport = new(120, 1);
         }
         public override bool CheckActive() => false;
+        public override bool CheckDead()
+        {
+            if (CurrentMode is YharonPhase1) // 一阶段特殊AI
+            {
+                NPC.life = (int)(NPC.lifeMax * 0.01f);
+                NPC.active = true;
+                return false;
+            }
+            return base.CheckDead();
+        }
         public override void SetBestiary(BestiaryDatabase database, BestiaryEntry bestiaryEntry)
         {
             bestiaryEntry.Info.AddRange(new IBestiaryInfoElement[1]
@@ -137,10 +147,25 @@ namespace CalamityYharonChange.Content.NPCs.YharonNPC
         public override void AI()
         {
             musicSupport.Update();
+            if(TargetPlayer.dead)
+            {
+                NPC.velocity = NPC.velocity.SafeNormalize(default) * (NPC.velocity.Length() + 1);
+                if (NPC.Distance(TargetPlayer.Center) > 1000)
+                    NPC.active = false;
+                return;
+            }
             CalamityGlobalNPC calamityGlobalNPC = NPC.Calamity();
             calamityGlobalNPC.DR = normalDR;
             calamityGlobalNPC.CurrentlyIncreasingDefenseOrDR = true;
             base.AI();
+            if (CurrentMode is YharonPhase1) // 一阶段特殊AI
+            {
+                if (CurrentSkill is not Phase1FinallyAttack && NPC.life < NPC.lifeMax * 0.01f)
+                {
+                    NPC.life = (int)(NPC.lifeMax * 0.01f);
+                    NPC.dontTakeDamage = true;
+                }
+            }
             SkyManager.Instance.Activate(nameof(YharonSky));
             YharonChangeSystem.YharonBoss = -1;
             if (YharonChangeSystem.YharonBoss != -1)

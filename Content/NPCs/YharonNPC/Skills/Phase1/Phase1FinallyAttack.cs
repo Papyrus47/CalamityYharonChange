@@ -12,23 +12,25 @@ using Terraria.ID;
 
 namespace CalamityYharonChange.Content.NPCs.YharonNPC.Skills.Phase1
 {
-    public class Phase1FinallyAttack : Dash
+    public class Phase1FinallyAttack : BasicPhase1Skills
     {
-        public Phase1FinallyAttack(NPC npc) : base(npc,30,20)
+        public Phase1FinallyAttack(NPC npc) : base(npc)
         {
         }
         public override void AI()
         {
-            NPC.dontTakeDamage = false;
+            NPC.rotation = NPC.rotation.AngleLerp(0, 0.1f);
             NPC.ai[2]++;
+            NPC.velocity *= 0.9f;
             SkillTimeUI.SkillTimeMax = 600;
             SkillTimeUI.SkillTime = (int)NPC.ai[2];
             SkillTimeUI.Active = true;
             SkillTimeUI.SkillName = TheUtility.RegisterTextBySkill("HellFire").Value;
             if (NPC.life < NPC.lifeMax * 0.001f)
+            {
                 NPC.life = (int)(NPC.lifeMax * 0.001f);
-            if (NPC.ai[2] <= 120 && NPC.life < NPC.lifeMax * 0.01f)
-                NPC.life = (int)(NPC.lifeMax * 0.01f);
+                NPC.dontTakeDamage = true;
+            }
             if ((int)NPC.ai[2] == 120)
             {
                 NPC.ai[0] = NPC.ai[1] = 0;
@@ -61,15 +63,28 @@ namespace CalamityYharonChange.Content.NPCs.YharonNPC.Skills.Phase1
                         (proj.ModProjectile as YharonFire).IsKillPlayer = true;
                     }
                 }
-                return;
-            }
-            base.AI();
-            if(DashState == DashMode.End)
-            {
-                DashState = DashMode.Wait;
-                NPC.ai[1] = 1;
             }
         }
-        public override bool CompulsionSwitchSkill(NPCSkills activeSkill) => YharonNPC.musicSupport.Bar >= (int)((YharonNPC.MusicTimerPhase1 - 120) / YharonNPC.musicSupport.Unit);
+        public override bool ActivationCondition(NPCSkills activeSkill) => false;
+        public override bool SwitchCondition(NPCSkills changeToSkill) => NPC.life < NPC.lifeMax * 0.001f;
+        public override bool CompulsionSwitchSkill(NPCSkills activeSkill) => YharonNPC.musicSupport.Bar >= YharonNPC.MusicTimerPhase1 && YharonNPC.musicSupport.OnBeat(4,1);
+        public override void FindFrame(int frameHeight)
+        {
+            if (NPC.frameCounter++ > 4)
+            {
+                NPC.frameCounter = 0;
+                NPC.frame.Y += frameHeight;
+                if (NPC.frame.Y >= frameHeight * (Main.npcFrameCount[NPC.type] - 2))
+                {
+                    NPC.ai[1]++;
+                    NPC.frame.Y = 0;
+                }
+            }
+        }
+        public override void OnSkillActive(NPCSkills activeSkill)
+        {
+            base.OnSkillActive(activeSkill);
+            NPC.dontTakeDamage = false;
+        }
     }
 }
