@@ -24,7 +24,7 @@ namespace CalamityYharonChange.Content.Projs.Bosses.Yharon
         public override void AI()
         {
             if (MaxRadius == 0)
-                MaxRadius = 800;
+                MaxRadius = 1300;
             base.AI();
         }
     }

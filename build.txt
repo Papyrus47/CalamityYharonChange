@@ -1,4 +1,4 @@
 displayName = 灾厄：重生之龙绝境战
 author = Null
 version = 0.1
-modReferences = CalamityMod,APIPapyru
+modReferences = CalamityMod

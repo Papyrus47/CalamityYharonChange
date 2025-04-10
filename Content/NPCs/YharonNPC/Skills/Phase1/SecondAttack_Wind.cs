@@ -32,7 +32,7 @@ namespace CalamityYharonChange.Content.NPCs.YharonNPC.Skills.Phase1
             SkillTimeUI.SkillTime = (int)NPC.ai[0];
             if ((int)NPC.ai[0]++ == 180)
             {
-                SoundEngine.PlaySound(Yharon.RoarSound, NPC.Center);
+                SoundEngine.PlaySound(Yharon.RoarSound with { Volume = 2f }, NPC.Center);
                 int yharonWind = YharonNPC.YharonWind;
                 Projectile.NewProjectileDirect(NPC.GetSource_FromAI(), Target.Bottom, Vector2.Zero, yharonWind, 0, 0f, Target.whoAmI);
                 for(int i = 0; i < 10; i++)

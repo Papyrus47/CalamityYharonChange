@@ -55,18 +55,18 @@ namespace CalamityYharonChange.Content.NPCs.YharonNPC.Skills.General
                     NPC.velocity *= 0.9f;
                     if (NPC.spriteDirection == -1)
                         NPC.rotation += MathHelper.Pi;
-                    if (NPC.ai[1] > 1)
+                    if (NPC.ai[1] > 0)
                     {
                         NPC.ai[1] = 0;
                         DashState = DashMode.Dash;
                         NPC.velocity = vel * DashSpeed;
                         if(DashTime > 30)
                         {
-                            SoundEngine.PlaySound(Yharon.RoarSound, NPC.Center);
+                            SoundEngine.PlaySound(Yharon.RoarSound with { Volume = 2f }, NPC.Center);
                         }
                         else
                         {
-                            SoundEngine.PlaySound(Yharon.ShortRoarSound, NPC.Center);
+                            SoundEngine.PlaySound(Yharon.ShortRoarSound with { Volume = 2f}, NPC.Center);
                         }
                     }
                     break;

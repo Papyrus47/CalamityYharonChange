@@ -26,7 +26,7 @@ namespace CalamityYharonChange.Content.NPCs.YharonNPC.Skills.Phase1
         /// 是否使用相反的技能
         /// </summary>
         public bool[] UseInvertSkill = new bool[3];
-        public FourthAttack_SP_Dash(NPC npc) : base(npc, 20, 23)
+        public FourthAttack_SP_Dash(NPC npc) : base(npc, 10, 23)
         {
         }
         public override void AI()
@@ -39,7 +39,7 @@ namespace CalamityYharonChange.Content.NPCs.YharonNPC.Skills.Phase1
                     string Skill2 = UseInvertSkill[1] ? TheUtility.RegisterTextBySkill("Moon").Value : TheUtility.RegisterTextBySkill("Iron").Value;
                     string Skill3 = UseInvertSkill[2] ? TheUtility.RegisterTextBySkill("FireWing").Value : TheUtility.RegisterTextBySkill("FireTrail").Value;
                     SkillTimeUI.Active = true;
-                    SkillTimeUI.SkillName = Skill1 + "+" + Skill2 + "+" + Skill3;
+                    SkillTimeUI.SkillName = Skill1 + Skill2 + Skill3;
                     SkillTimeUI.SkillTimeMax = 240;
                     SkillTimeUI.SkillTime = (int)NPC.ai[2];
                     if (NPC.ai[2]++ < 20)
@@ -49,7 +49,7 @@ namespace CalamityYharonChange.Content.NPCs.YharonNPC.Skills.Phase1
                         NPC.velocity += vel;
                         NPC.rotation = NPC.velocity.ToRotation();
                         NPC.velocity *= 0.2f;
-                        NPC.ai[3] = (Target.Center - NPC.Center).Length();
+                        NPC.ai[3] = Math.Max((Target.Center - NPC.Center).Length(),500);
                         if (NPC.spriteDirection == -1)
                             NPC.rotation += MathHelper.Pi;
                     }
@@ -71,11 +71,11 @@ namespace CalamityYharonChange.Content.NPCs.YharonNPC.Skills.Phase1
                         Projectile.NewProjectileDirect(NPC.GetSource_FromAI(), Target.Bottom, Vector2.Zero, yharonWind, 0, 0f, Target.whoAmI);
                         if (NPC.ai[3] / DashTime > 30)
                         {
-                            SoundEngine.PlaySound(Yharon.RoarSound, NPC.Center);
+                            SoundEngine.PlaySound(Yharon.RoarSound with { Volume = 2f }, NPC.Center);
                         }
                         else
                         {
-                            SoundEngine.PlaySound(Yharon.ShortRoarSound, NPC.Center);
+                            SoundEngine.PlaySound(Yharon.ShortRoarSound with { Volume = 2f }, NPC.Center);
                         }
                     }
                     break;
@@ -83,7 +83,7 @@ namespace CalamityYharonChange.Content.NPCs.YharonNPC.Skills.Phase1
                     SkillTimeUI.Active = false;
                     base.AI();
                     #region 烈翼
-                    if ((int)NPC.ai[1] % 5 == 0)
+                    if ((int)NPC.ai[1] % 2 == 0)
                     {
                         if (UseInvertSkill[2])
                         {
@@ -151,11 +151,11 @@ namespace CalamityYharonChange.Content.NPCs.YharonNPC.Skills.Phase1
                         }
                         else // 钢铁
                         {
-                            var proj = Projectile.NewProjectileDirect(NPC.GetSource_FromAI(), NPC.Center, Vector2.Zero, YharonNPC.YharonFireBoom, NPC.GetProjectileDamage(YharonNPC.YharonFireBoom), 0f, Target.whoAmI, 4f);
+                            var proj = Projectile.NewProjectileDirect(NPC.GetSource_FromAI(), NPC.Center, Vector2.Zero, YharonNPC.YharonFireBoom, NPC.GetProjectileDamage(YharonNPC.YharonFireBoom), 0f, Target.whoAmI, 5f);
                         }
                     }
                     #endregion
-                    if (NPC.ai[1]++ > 150)
+                    if (NPC.ai[1]++ > 240)
                     {
                         NPC.ai[0]++;
                     }

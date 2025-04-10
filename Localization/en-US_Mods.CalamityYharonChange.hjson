@@ -35,3 +35,28 @@ SkillName: {
 	FireTrail: 烈尾旋风冲
 	HellFire: 地狱之火炎
 }
+
+Configs: {
+	YharonConfig: {
+		DisplayName: 设置
+
+		uiConfig: {
+			Label: UI设置
+			Tooltip: ""
+		}
+	}
+
+	UIConfig: {
+		Tooltip: ""
+
+		ReadUIX: {
+			Label: 读条UI的X偏移
+			Tooltip: ""
+		}
+
+		ReadUIY: {
+			Label: 读条UI的Y偏移
+			Tooltip: ""
+		}
+	}
+}

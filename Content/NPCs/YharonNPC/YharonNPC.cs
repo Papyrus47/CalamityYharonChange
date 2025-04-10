@@ -48,8 +48,9 @@ namespace CalamityYharonChange.Content.NPCs.YharonNPC
         public static int YharonDustBoom;
         public static int YharonFireBoom;
         public static int YharonMoonLighting;
-        public readonly int MusicTimerPhase1 = 53;
+        public readonly int MusicTimerPhase1 = 52;
         public MusicSupport musicSupport;
+        public OnDead onDead;
         public override void SetStaticDefaults()
         {
             base.SetStaticDefaults();
@@ -147,12 +148,11 @@ namespace CalamityYharonChange.Content.NPCs.YharonNPC
         public override void AI()
         {
             musicSupport.Update();
-            if(TargetPlayer.dead)
+            if (CurrentSkill is not OnDead && (TargetPlayer.dead || !TargetPlayer.active))
             {
-                NPC.velocity = NPC.velocity.SafeNormalize(default) * (NPC.velocity.Length() + 1);
-                if (NPC.Distance(TargetPlayer.Center) > 1000)
-                    NPC.active = false;
-                return;
+                CurrentSkill.OnSkillDeactivate(onDead);
+                onDead.OnSkillActive(CurrentSkill);
+                CurrentSkill = onDead;
             }
             CalamityGlobalNPC calamityGlobalNPC = NPC.Calamity();
             calamityGlobalNPC.DR = normalDR;
@@ -191,9 +191,13 @@ namespace CalamityYharonChange.Content.NPCs.YharonNPC
 
             SkillNPC.Register(yharonPhase1);
             yharonPhase1.OnEnterMode();
-            CurrentMode = yharonPhase1; 
+            CurrentMode = yharonPhase1;
             #endregion
             #region 技能
+            #region 通用
+            onDead = new(NPC);
+            SkillNPC.Register(onDead);
+            #endregion
             #region 第一阶段
             Phase1NoAtk noAtk = new(NPC);
             
