@@ -1,6 +1,9 @@
 ﻿using CalamityMod;
 using CalamityMod.Buffs.DamageOverTime;
+using CalamityMod.Projectiles.Boss;
+using CalamityYharonChange.Content.NPCs.Dusts;
 using CalamityYharonChange.Content.Projs;
+using CalamityYharonChange.Content.Projs.Bosses.Yharon;
 using CalamityYharonChange.Core.SkillsNPC;
 using System;
 using System.Collections.Generic;
@@ -23,6 +26,7 @@ namespace CalamityYharonChange.Content.NPCs.YharonNPC.Skills.Phase1
             NPC.ai[0]++;
             NPC.velocity *= 0;
             NPC.dontTakeDamage = true;
+            LimitEdge();
             if ((int)NPC.ai[0] == 1) // 产生扩散波,并且上Debuff
             {
                 Projectile.NewProjectileDirect(NPC.GetSource_FromAI(), NPC.Center, Vector2.Zero, YharonNPC.YharonRoarWave, 0, 0f, Target.whoAmI);
@@ -35,13 +39,20 @@ namespace CalamityYharonChange.Content.NPCs.YharonNPC.Skills.Phase1
             {
                 int lenght = (int)(NPC.ai[0] / 60); // 距离
                 float Const = 20 + lenght * 20;
-                for (int j = 0; j < 1; j++)
+                for (int i = 0; i < Const; i++)
                 {
-                    for (int i = 0; i < Const; i++)
-                    {
-                        Projectile.NewProjectileDirect(NPC.GetSource_FromAI(), NPC.Center + (Vector2.UnitX.RotatedBy(i / Const * MathHelper.TwoPi) * (lenght + j) * 98f * 2), Vector2.Zero, type, NPC.GetProjectileDamage(type), 0f, Target.whoAmI);
-                        Projectile.NewProjectileDirect(NPC.GetSource_FromAI(), NPC.Center + Vector2.UnitX.RotatedBy(i / Const * MathHelper.TwoPi) * ((lenght + j) * 98f * 2), Vector2.Zero, type, 0, 0f, Target.whoAmI, 1);
-                    }
+                    Projectile.NewProjectileDirect(NPC.GetSource_FromAI(), NPC.Center + (Vector2.UnitX.RotatedBy(i / Const * MathHelper.TwoPi) * lenght * 98f * 2), Vector2.Zero, type, NPC.GetProjectileDamage(type), 0f, Target.whoAmI);
+                    Projectile.NewProjectileDirect(NPC.GetSource_FromAI(), NPC.Center + (Vector2.UnitX.RotatedBy(i / Const * MathHelper.TwoPi) * lenght * 98f * 2), Vector2.Zero, type, 0, 0f, Target.whoAmI, 1);
+                }
+            }
+            else if ((int)NPC.ai[0] % 60 == 31 && (NPC.ai[0] - 30) / 60 > 5)
+            {
+                int lenght = (int)((NPC.ai[0] - 300) / 60); // 距离
+                float Const = 20 + lenght * 20;
+                for (int i = 0; i < Const; i++)
+                {
+                    Projectile.NewProjectileDirect(NPC.GetSource_FromAI(), NPC.Center + (Vector2.UnitX.RotatedBy(i / Const * MathHelper.TwoPi) * lenght * 98f * 2), Vector2.Zero, type, NPC.GetProjectileDamage(type), 0f, Target.whoAmI);
+                    Projectile.NewProjectileDirect(NPC.GetSource_FromAI(), NPC.Center + (Vector2.UnitX.RotatedBy(i / Const * MathHelper.TwoPi) * lenght * 98f * 2), Vector2.Zero, type, 0, 0f, Target.whoAmI, 1);
                 }
             }
             if ((int)NPC.ai[0] % 20 == 0)
@@ -50,11 +61,14 @@ namespace CalamityYharonChange.Content.NPCs.YharonNPC.Skills.Phase1
                 float Const = 10;
                 for (int i = 0; i < Const; i++)
                 {
-                    var proj = Projectile.NewProjectileDirect(NPC.GetSource_FromAI(), NPC.Center, Vector2.UnitX.RotatedBy(i / Const * MathHelper.TwoPi + NPC.ai[0] % 6) * 6f, type, NPC.GetProjectileDamage(type), 0f, Target.whoAmI,-1);
+                    var proj = Projectile.NewProjectileDirect(NPC.GetSource_FromAI(), NPC.Center, Vector2.UnitX.RotatedBy(i / Const * MathHelper.TwoPi + NPC.ai[0] % 6) * 6f, type, NPC.GetProjectileDamage(type), 0f, Target.whoAmI, -1);
                     proj.timeLeft *= 5;
                 }
-                var proj1 = Projectile.NewProjectileDirect(NPC.GetSource_FromAI(), NPC.Center,(Target.Center - NPC.Center).SafeNormalize(default) * 8f, type, NPC.GetProjectileDamage(type), 0f, Target.whoAmI, -1);
-                proj1.timeLeft *= 5;
+                if ((int)(NPC.ai[0] - 30) % 3 == 0)
+                {
+                    var proj1 = Projectile.NewProjectileDirect(NPC.GetSource_FromAI(), NPC.Center, (Target.Center - NPC.Center).SafeNormalize(default) * 8f, ModContent.ProjectileType<DarkRedFlareBomb>(), NPC.GetProjectileDamage(type), 0f, Target.whoAmI, -1);
+                    proj1.timeLeft *= 5;
+                }
             }
             //if((int)NPC.ai[0] % 120 == 40)
             //{

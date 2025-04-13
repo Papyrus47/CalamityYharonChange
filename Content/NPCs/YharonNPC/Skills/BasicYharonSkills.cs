@@ -1,4 +1,5 @@
-﻿using CalamityYharonChange.Content.UIs;
+﻿using CalamityYharonChange.Content.NPCs.Dusts;
+using CalamityYharonChange.Content.UIs;
 using CalamityYharonChange.Core.SkillsNPC;
 using Microsoft.Xna.Framework.Graphics;
 using System;
@@ -35,7 +36,7 @@ namespace CalamityYharonChange.Content.NPCs.YharonNPC.Skills
         {
             Main.instance.LoadNPC(NPC.type);
             Texture2D tex = TextureAssets.Npc[NPC.type].Value;
-            spriteBatch.Draw(tex, NPC.Center - screenPos, NPC.frame, drawColor, NPC.rotation, NPC.frame.Size() * 0.5f, NPC.scale, NPC.spriteDirection == 1 ? SpriteEffects.None : SpriteEffects.FlipHorizontally, 0f);
+            spriteBatch.Draw(tex, NPC.Center - screenPos, NPC.frame, drawColor * (1f - (float)NPC.alpha / 255f), NPC.rotation, NPC.frame.Size() * 0.5f, NPC.scale, NPC.spriteDirection == 1 ? SpriteEffects.None : SpriteEffects.FlipHorizontally, 0f);
             return false;
         }
         public virtual void DrawBall(SpriteBatch spriteBatch, Vector2 screenPos)
@@ -53,6 +54,19 @@ namespace CalamityYharonChange.Content.NPCs.YharonNPC.Skills
             for(int i = 1; i < drawConst; i++)
             {
                 spriteBatch.Draw(tex, NPC.oldPos[i] + NPC.frame.Size() * 0.25f * NPC.scale - screenPos, NPC.frame, Color.White * (1f - i / drawConst), NPC.rotation, NPC.frame.Size() * 0.5f, NPC.scale, NPC.spriteDirection == 1 ? SpriteEffects.None : SpriteEffects.FlipHorizontally, 0f);
+            }
+        }
+        public void LimitEdge(float limit = 90)
+        {
+            if (Target.Center.Distance(NPC.Center) > 16 * limit)
+            {
+                Target.Center -= (NPC.Center - Target.Center).SafeNormalize(default);
+                Target.velocity = (NPC.Center - Target.Center).SafeNormalize(default) * 5;
+            }
+            for (int i = 0; i < limit; i++)
+            {
+                Vector2 pos = NPC.Center + Vector2.UnitX.RotatedBy(i / 60f * MathHelper.TwoPi + Main.timeForVisualEffects) * (limit * 16 + 100);
+                Dust dust = Dust.NewDustPerfect(pos, ModContent.DustType<YharonFireDust>(), (NPC.Center - pos).SafeNormalize(default) * 5, 100, Color.OrangeRed, 0.54f);
             }
         }
     }

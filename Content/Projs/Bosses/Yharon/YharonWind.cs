@@ -27,6 +27,7 @@ namespace CalamityYharonChange.Content.Projs.Bosses.Yharon
                 Projectile.soundDelay = 10;
                 // 添加音效
             }
+            Projectile.timeLeft = 2;
             Projectile.damage = 0;
             Projectile.rotation += 0.1f;
             Projectile.rotation %= 6.28f;
@@ -39,10 +40,10 @@ namespace CalamityYharonChange.Content.Projs.Bosses.Yharon
                     Projectile.damage /= 4;
                 int size = (int)(408 * Projectile.scale);
                 Projectile.Resize(size, size);
-                if(Projectile.scale > 5 / 12.75f)
+                if(Projectile.scale > 2.5f / 12.75f)
                 {
                     Projectile.ai[1]++;
-                    if (Projectile.ai[1] > 10)
+                    if (Projectile.ai[1] > 300)
                         Projectile.Kill();
                     // 这里添加音效
                 }
@@ -54,6 +55,7 @@ namespace CalamityYharonChange.Content.Projs.Bosses.Yharon
         }
         public override void OnHitPlayer(Player target, Player.HurtInfo info)
         {
+            target.velocity.X = Main.rand.NextFloat(-6, 6);
             target.Yharon().PlayerFly = 10;
             target.AddBuff(ModContent.BuffType<FlyWind>(),3600);
         }
@@ -61,7 +63,7 @@ namespace CalamityYharonChange.Content.Projs.Bosses.Yharon
         {
             Texture2D projTex = TextureAssets.Projectile[Type].Value; // 获取贴图
             Vector2 drawPos = Projectile.Center - Main.screenPosition;
-            Color color = Color.OrangeRed with { A = 100 };
+            Color color = Color.Green with { A = 100 };
             Main.EntitySpriteDraw(projTex, drawPos, null, color, Projectile.rotation, projTex.Size() * 0.5f, Projectile.scale, SpriteEffects.None, 0f);
             return false;
         }

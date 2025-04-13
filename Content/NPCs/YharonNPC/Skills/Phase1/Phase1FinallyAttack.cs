@@ -1,4 +1,5 @@
 ﻿using CalamityMod;
+using CalamityMod.NPCs;
 using CalamityYharonChange.Content.NPCs.YharonNPC.Skills.General;
 using CalamityYharonChange.Content.Projs.Bosses.Yharon;
 using CalamityYharonChange.Content.UIs;
@@ -22,6 +23,8 @@ namespace CalamityYharonChange.Content.NPCs.YharonNPC.Skills.Phase1
             NPC.rotation = NPC.rotation.AngleLerp(0, 0.1f);
             NPC.ai[2]++;
             NPC.velocity *= 0.9f;
+            CalamityGlobalNPC calamityGlobalNPC = NPC.Calamity();
+            calamityGlobalNPC.AITimer = calamityGlobalNPC.KillTime;
             SkillTimeUI.SkillTimeMax = 600;
             SkillTimeUI.SkillTime = (int)NPC.ai[2];
             SkillTimeUI.Active = true;

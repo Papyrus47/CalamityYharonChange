@@ -11,6 +11,7 @@ Projectiles: {
 	YharonFireBoom.DisplayName: Yharon Fire Boom
 	YharonNormalBoomProj.DisplayName: Yharon Normal Boom Proj
 	YharonMoonLighting.DisplayName: Yharon Moon Lighting
+	Boss.DarkRedFlareBomb.DisplayName: Dark Red Flare Bomb
 }
 
 Buffs: {
@@ -58,5 +59,12 @@ Configs: {
 			Label: 读条UI的Y偏移
 			Tooltip: ""
 		}
+	}
+}
+
+Items: {
+	YharonEgg: {
+		DisplayName: Yharon Egg
+		Tooltip: ""
 	}
 }

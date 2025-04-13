@@ -19,7 +19,8 @@ namespace CalamityYharonChange.Content.NPCs.YharonNPC.Modes
         public override void OnEnterMode()
         {
             YharonNPC.NPC.Calamity().AITimer = 0;
-            YharonNPC.NPC.Calamity().KillTime = YharonNPC.MusicTimerPhase1 + 600;
+            YharonNPC.NPC.Calamity().KillTime = (int)(YharonNPC.musicSupport.Unit * YharonNPC.MusicTimerPhase1) * 2;
         }
+        public override bool ActivationCondition(NPCModes activeMode) => false;
     }
 }

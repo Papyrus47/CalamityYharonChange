@@ -79,9 +79,20 @@ namespace CalamityYharonChange.Content.NPCs.YharonNPC.Skills.General
                         DashState = DashMode.End;
                     }
                     break;
+                case DashMode.End:
+                    NPC.velocity *= 0.99f;
+                    NPC.ai[1]++;
+                    break;
             }
         }
-        public override bool SwitchCondition(NPCSkills changeToSkill) => (DashMode)NPC.ai[0] == DashMode.End;
+        public override bool SwitchCondition(NPCSkills changeToSkill)
+        {
+            bool flag = NPC.ai[1] > 20;
+            if (changeToSkill == null)
+                flag = true;
+            return (DashMode)NPC.ai[0] == DashMode.End && flag;
+        }
+
         public override bool ActivationCondition(NPCSkills activeSkill) => true;
         public override void FindFrame(int frameHeight)
         {

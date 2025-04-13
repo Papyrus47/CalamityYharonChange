@@ -31,6 +31,14 @@ namespace CalamityYharonChange.Content.NPCs.YharonNPC.Skills.Phase1
         }
         public override void AI()
         {
+            if (NPC.alpha > 0)
+            {
+                NPC.velocity *= 0;
+                NPC.alpha -= 255 / 30;
+                return;
+            }
+            else
+                NPC.alpha = 0;
             switch (DashState)
             {
                 case DashMode.Wait:
@@ -49,7 +57,7 @@ namespace CalamityYharonChange.Content.NPCs.YharonNPC.Skills.Phase1
                         NPC.velocity += vel;
                         NPC.rotation = NPC.velocity.ToRotation();
                         NPC.velocity *= 0.2f;
-                        NPC.ai[3] = Math.Max((Target.Center - NPC.Center).Length(),500);
+                        NPC.ai[3] = Math.Max((Target.Center - NPC.Center).Length(),500) + 200;
                         if (NPC.spriteDirection == -1)
                             NPC.rotation += MathHelper.Pi;
                     }
@@ -89,10 +97,10 @@ namespace CalamityYharonChange.Content.NPCs.YharonNPC.Skills.Phase1
                         {
                             for (int i = 1; i <= 5; i++)
                             {
-                                var proj = Projectile.NewProjectileDirect(NPC.GetSource_FromAI(), NPC.Center + NPC.velocity.RotatedBy(MathHelper.PiOver2).SafeNormalize(default) * 160 * i, Vector2.Zero, YharonNPC.YharonFire, NPC.GetProjectileDamage(YharonNPC.YharonFire), 0f, Target.whoAmI);
+                                var proj = Projectile.NewProjectileDirect(NPC.GetSource_FromAI(), NPC.Center + NPC.velocity.RotatedBy(MathHelper.PiOver2).SafeNormalize(default) * (160 * i + 160f), Vector2.Zero, YharonNPC.YharonFire, NPC.GetProjectileDamage(YharonNPC.YharonFire), 0f, Target.whoAmI);
                                 proj.scale = 1;
                                 proj.timeLeft = 16;
-                                proj = Projectile.NewProjectileDirect(NPC.GetSource_FromAI(), NPC.Center + NPC.velocity.RotatedBy(-MathHelper.PiOver2).SafeNormalize(default) * 160 * i, Vector2.Zero, YharonNPC.YharonFire, NPC.GetProjectileDamage(YharonNPC.YharonFire), 0f, Target.whoAmI);
+                                proj = Projectile.NewProjectileDirect(NPC.GetSource_FromAI(), NPC.Center + NPC.velocity.RotatedBy(-MathHelper.PiOver2).SafeNormalize(default) * (160 * i + 160f), Vector2.Zero, YharonNPC.YharonFire, NPC.GetProjectileDamage(YharonNPC.YharonFire), 0f, Target.whoAmI);
                                 proj.scale = 1;
                                 proj.timeLeft = 16;
                             }
@@ -159,6 +167,16 @@ namespace CalamityYharonChange.Content.NPCs.YharonNPC.Skills.Phase1
                     {
                         NPC.ai[0]++;
                     }
+                    else if (NPC.ai[1] > 120)
+                    {
+                        vel = (Target.Center - NPC.Center).SafeNormalize(default);
+                        NPC.spriteDirection = NPC.direction = (vel.X > 0).ToDirectionInt();
+                        NPC.velocity += vel;
+                        NPC.rotation = NPC.velocity.ToRotation();
+                        NPC.velocity *= 0.2f;
+                        if (NPC.spriteDirection == -1)
+                            NPC.rotation += MathHelper.Pi;
+                    }
                     break;
                 default:
                     break;
@@ -170,6 +188,8 @@ namespace CalamityYharonChange.Content.NPCs.YharonNPC.Skills.Phase1
             UseInvertSkill[0] = Main.rand.NextBool();
             UseInvertSkill[1] = Main.rand.NextBool();
             UseInvertSkill[2] = Main.rand.NextBool();
+            NPC.alpha = 255;
+            NPC.Center = Target.Center + Main.rand.NextVector2Unit() * 300;
         }
         public override bool SwitchCondition(NPCSkills changeToSkill) => NPC.ai[0] > (int)DashMode.End;
         public override bool CanHitPlayer(Player target, ref int cooldownSlot) => false;

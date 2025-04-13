@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 using Terraria.UI;
 using ReLogic.Graphics;
 using CalamityYharonChange.Content.Configs;
+using CalamityYharonChange.Content.Systems;
 
 namespace CalamityYharonChange.Content.UIs
 {
@@ -39,6 +40,8 @@ namespace CalamityYharonChange.Content.UIs
         }
         public override void Update(GameTime gameTime)
         {
+            if (YharonChangeSystem.YharonBoss == -1)
+                Active = false;
             if (Active)
             {
                 MoveX = YharonConfig.Instance.uiConfig.ReadUIX;

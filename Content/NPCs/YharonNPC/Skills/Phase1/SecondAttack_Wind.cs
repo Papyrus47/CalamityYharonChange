@@ -37,7 +37,7 @@ namespace CalamityYharonChange.Content.NPCs.YharonNPC.Skills.Phase1
                 Projectile.NewProjectileDirect(NPC.GetSource_FromAI(), Target.Bottom, Vector2.Zero, yharonWind, 0, 0f, Target.whoAmI);
                 for(int i = 0; i < 10; i++)
                 {
-                    Projectile.NewProjectileDirect(NPC.GetSource_FromAI(), Target.Center + Main.rand.NextVector2Unit() * Main.rand.NextFloat(200,500), Vector2.Zero, yharonWind, 0, 0f, Target.whoAmI);
+                    Projectile.NewProjectileDirect(NPC.GetSource_FromAI(), Target.Center + Main.rand.NextVector2Unit() * Main.rand.NextFloat(200,900), Vector2.Zero, yharonWind, 0, 0f, Target.whoAmI);
                 }
             }
         }

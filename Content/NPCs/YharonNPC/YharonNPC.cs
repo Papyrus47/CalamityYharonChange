@@ -133,6 +133,13 @@ namespace CalamityYharonChange.Content.NPCs.YharonNPC
             }
             return base.CheckDead();
         }
+        public override void ModifyIncomingHit(ref NPC.HitModifiers modifiers)
+        {
+            modifiers.SetMaxDamage(NPC.life - 1);
+            CalamityGlobalNPC calamityGlobalNPC = NPC.Calamity();
+            if(calamityGlobalNPC.AITimer < calamityGlobalNPC.KillTime)
+                modifiers.FinalDamage *= 2f - (1f - (float)calamityGlobalNPC.AITimer / calamityGlobalNPC.KillTime) - ((float)NPC.life / NPC.lifeMax);
+        }
         public override void SetBestiary(BestiaryDatabase database, BestiaryEntry bestiaryEntry)
         {
             bestiaryEntry.Info.AddRange(new IBestiaryInfoElement[1]
@@ -166,7 +173,7 @@ namespace CalamityYharonChange.Content.NPCs.YharonNPC
                     NPC.dontTakeDamage = true;
                 }
             }
-            SkyManager.Instance.Activate(nameof(YharonSky));
+            //SkyManager.Instance.Activate(nameof(YharonSky));
             YharonChangeSystem.YharonBoss = -1;
             if (YharonChangeSystem.YharonBoss != -1)
             {
@@ -184,8 +191,6 @@ namespace CalamityYharonChange.Content.NPCs.YharonNPC
             OldSkills = new();
 
             YharonChangeSystem.YharonFixedPos = TargetPlayer.position; // 固定战斗场地位置
-            Projectile.NewProjectile(NPC.GetSource_FromAI(), TargetPlayer.position, Vector2.Zero, ModContent.ProjectileType<YharonLimitWing>(), 0, 0, TargetPlayer.whoAmI, 1);
-            Projectile.NewProjectile(NPC.GetSource_FromAI(), TargetPlayer.position, Vector2.Zero, ModContent.ProjectileType<YharonLimitWing>(), 0, 0, TargetPlayer.whoAmI, -1);
             #region 状态
             YharonPhase1 yharonPhase1 = new YharonPhase1(NPC);
 

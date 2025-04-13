@@ -93,6 +93,7 @@ namespace CalamityYharonChange.Core.SkillsNPC
             base.ReceiveExtraAI(reader);
             SkillNPC.ReadData(reader);
         }
+        public override bool CanHitPlayer(Player target, ref int cooldownSlot) => CurrentSkill?.CanHitPlayer(target, ref cooldownSlot) == true;
         public override void ModifyHitPlayer(Player target, ref Player.HurtModifiers modifiers)
         {
             CurrentSkill?.ModifyHitPlayer(target, ref modifiers);
