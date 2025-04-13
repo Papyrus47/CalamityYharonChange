@@ -13,7 +13,7 @@ namespace CalamityYharonChange.Content.NPCs.Dusts
             get
             {
                 instance ??= new();
-                return instance;  
+                return instance;
             }
             private set => instance = value; 
         }
