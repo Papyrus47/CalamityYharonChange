@@ -51,6 +51,11 @@ namespace CalamityYharonChange.Content.NPCs.YharonNPC
         public readonly int MusicTimerPhase1 = 52;
         public MusicSupport musicSupport;
         public OnDead onDead;
+        public readonly List<Action> actions = new();
+        public event Action ExtraAI
+        {
+            add => actions.Add(value); remove => actions.Remove(value);
+        }
         public override void SetStaticDefaults()
         {
             base.SetStaticDefaults();
@@ -155,6 +160,13 @@ namespace CalamityYharonChange.Content.NPCs.YharonNPC
         public override void AI()
         {
             musicSupport.Update();
+            if (actions.Count > 0)
+            {
+                for (int i = actions.Count - 1; i >= 0; i--)
+                {
+                    actions[i]?.Invoke();
+                }
+            }
             if (CurrentSkill is not OnDead && (TargetPlayer.dead || !TargetPlayer.active))
             {
                 CurrentSkill.OnSkillDeactivate(onDead);
