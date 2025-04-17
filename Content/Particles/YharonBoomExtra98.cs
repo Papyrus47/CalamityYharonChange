@@ -5,20 +5,20 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace CalamityYharonChange.Content.Partcles
+namespace CalamityYharonChange.Content.Particles
 {
-    public class YharonBoomExtra98 : BasicPartcle
+    public class YharonBoomExtra98 : BasicParticle
     {
         public override Asset<Texture2D> Texture => TextureAssets.Extra[98];
         public YharonBoomExtra98()
         {
-            TimeLeftMax = 20;
+            maxTime = 20;
             scale = new Vector2(2f,2f);
         }
         public override void PostUpdate()
         {
             base.PostUpdate();
-            if (TimeLeft <= TimeLeftMax * 0.5f)
+            if (lifetime <= maxTime * 0.5f)
                 scale.X += (10f - scale.X) * 0.2f;
             scale.Y -= 0.1f;
             rotation = velocity.ToRotation();

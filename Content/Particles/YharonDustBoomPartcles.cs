@@ -6,9 +6,9 @@ using System.Text;
 using System.Threading.Tasks;
 using Terraria;
 
-namespace CalamityYharonChange.Content.Partcles
+namespace CalamityYharonChange.Content.Particles
 {
-    public class YharonDustBoomPartcles : BasicPartcle
+    public class YharonDustBoomParticles : BasicParticle
     {
         public int alpha;
         public bool InBoom;

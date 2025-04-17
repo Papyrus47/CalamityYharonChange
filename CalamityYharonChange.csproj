@@ -8,11 +8,6 @@
 		
 	</PropertyGroup>
 	<ItemGroup>
-	  <Reference Include="CalamityMod">
-	    <HintPath>..\CalamityMod.dll</HintPath>
-	  </Reference>
-	</ItemGroup>
-	<ItemGroup>
 		<Publicize Include="CalamityMod" IncludeVirtualMembers="false" />
 	</ItemGroup>
 	<ItemGroup>
@@ -20,6 +15,11 @@
 	    <PrivateAssets>all</PrivateAssets>
 	    <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
 	  </PackageReference>
+	</ItemGroup>
+	<ItemGroup>
+	  <Reference Include="CalamityMod">
+	    <HintPath>..\..\ModReader\CalamityMod\CalamityMod.dll</HintPath>
+	  </Reference>
 	</ItemGroup>
 
 	<!-- References -->

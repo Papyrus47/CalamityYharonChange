@@ -1,4 +1,4 @@
-﻿using CalamityYharonChange.Content.Partcles;
+﻿using CalamityYharonChange.Content.Particles;
 using CalamityYharonChange.Core.Particles;
 using System;
 using System.Collections.Generic;
@@ -30,7 +30,7 @@ namespace CalamityYharonChange.Content.Projs.Bosses.Yharon
         public override void SetStaticDefaults()
         {
             base.SetStaticDefaults();
-            ProjectileID.Sets.DrawScreenCheckFluff[Type] = 1000000000;
+            ProjectileID.Sets.DrawScreenCheckFluff[Type] = 1000000;
         }
         public override void SetDefaults()
         {

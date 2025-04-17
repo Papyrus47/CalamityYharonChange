@@ -2,6 +2,7 @@
 using CalamityMod.NPCs.Yharon;
 using CalamityYharonChange.Content.NPCs.Dusts;
 using CalamityYharonChange.Content.NPCs.YharonNPC.Skills.General;
+using CalamityYharonChange.Content.Projs;
 using CalamityYharonChange.Content.Projs.Bosses.Yharon;
 using CalamityYharonChange.Content.UIs;
 using CalamityYharonChange.Core.SkillsNPC;
@@ -91,10 +92,11 @@ namespace CalamityYharonChange.Content.NPCs.YharonNPC.Skills.Phase1
                     SkillTimeUI.Active = false;
                     base.AI();
                     #region 烈翼
-                    if ((int)NPC.ai[1] % 2 == 0)
+                    if ((int)NPC.ai[1] /* % 2*/ == 0)
                     {
                         if (UseInvertSkill[2])
                         {
+                            /*
                             for (int i = 1; i <= 5; i++)
                             {
                                 var proj = Projectile.NewProjectileDirect(NPC.GetSource_FromAI(), NPC.Center + NPC.velocity.RotatedBy(MathHelper.PiOver2).SafeNormalize(default) * (160 * i + 160f), Vector2.Zero, YharonNPC.YharonFire, NPC.GetProjectileDamage(YharonNPC.YharonFire), 0f, Target.whoAmI);
@@ -103,13 +105,23 @@ namespace CalamityYharonChange.Content.NPCs.YharonNPC.Skills.Phase1
                                 proj = Projectile.NewProjectileDirect(NPC.GetSource_FromAI(), NPC.Center + NPC.velocity.RotatedBy(-MathHelper.PiOver2).SafeNormalize(default) * (160 * i + 160f), Vector2.Zero, YharonNPC.YharonFire, NPC.GetProjectileDamage(YharonNPC.YharonFire), 0f, Target.whoAmI);
                                 proj.scale = 1;
                                 proj.timeLeft = 16;
-                            }
+                            }*/
+                            Vector2 v = Vector2.Normalize(NPC.velocity);
+                            Vector2 vert = Helper.VerticalVec(v);
+                            Projectile.NewProjectile(NPC.GetSource_FromAI(), NPC.Center + vert * 600, v, ModContent.ProjectileType<FireBurst_Rectangle>(), NPC.GetProjectileDamage(ModContent.ProjectileType<FireBurst_Rectangle>()), 1, Main.myPlayer, 0, 8000, 800);
+                            Projectile.NewProjectile(NPC.GetSource_FromAI(), NPC.Center - vert * 600, v, ModContent.ProjectileType<FireBurst_Rectangle>(), NPC.GetProjectileDamage(ModContent.ProjectileType<FireBurst_Rectangle>()), 1, Main.myPlayer, 0, 8000, 800);
+
                         }
                         else
                         {
+                            Vector2 v = Vector2.Normalize(NPC.velocity);
+                            Vector2 vert = Helper.VerticalVec(v);
+                            Projectile.NewProjectile(NPC.GetSource_FromAI(), NPC.Center, v, ModContent.ProjectileType<FireBurst_Rectangle>(), NPC.GetProjectileDamage(ModContent.ProjectileType<FireBurst_Rectangle>()), 1, Main.myPlayer, 0, 8000, 800);
+
+                            /*
                             var proj = Projectile.NewProjectileDirect(NPC.GetSource_FromAI(), NPC.Center, Vector2.Zero, YharonNPC.YharonFire, NPC.GetProjectileDamage(YharonNPC.YharonFire), 0f, Target.whoAmI);
                             proj.scale = 2;
-                            proj.timeLeft = 16;
+                            proj.timeLeft = 16;*/
                         }
                     }
                     #endregion
@@ -121,27 +133,33 @@ namespace CalamityYharonChange.Content.NPCs.YharonNPC.Skills.Phase1
                     {
                         if (UseInvertSkill[0])
                         {
+                            /*
                             for (int i = -10; i <= 10; i++)
                             {
                                 var proj = Projectile.NewProjectileDirect(NPC.GetSource_FromAI(), NPC.Center, DashDir.RotatedBy(MathHelper.ToRadians(120) / 20f * i) * 10, YharonNPC.YharonFire, NPC.GetProjectileDamage(YharonNPC.YharonFire), 0f, Target.whoAmI);
                                 proj.extraUpdates = 10;
                                 proj.localAI[1] = Math.Abs(i / 10f);
-                            }
+                            }*/
+                            Projectile.NewProjectile(NPC.GetSource_FromAI(), NPC.Center, DashDir, ModContent.ProjectileType<FireBurst>(), NPC.GetProjectileDamage(ModContent.ProjectileType<FireBurst>()), 0f, Main.myPlayer);
                             NPC.velocity = -DashDir * 80;
                         }
                         else
                         {
+                            /*
                             for (int i = -10; i <= 10; i++)
                             {
                                 var proj = Projectile.NewProjectileDirect(NPC.GetSource_FromAI(), NPC.Center, -DashDir.RotatedBy(MathHelper.ToRadians(120) / 20f * i) * 10, YharonNPC.YharonFire, NPC.GetProjectileDamage(YharonNPC.YharonFire), 0f, Target.whoAmI);
                                 proj.extraUpdates = 10;
                                 proj.localAI[1] = Math.Abs(i / 10f);
-                            }
+                            }*/
+                            Projectile.NewProjectile(NPC.GetSource_FromAI(), NPC.Center, -DashDir, ModContent.ProjectileType<FireBurst>(), NPC.GetProjectileDamage(ModContent.ProjectileType<FireBurst>()), 0f, Main.myPlayer);
+
                             NPC.velocity = DashDir * 80;
                         }
                     }
                     else if (!UseInvertSkill[0] && NPC.ai[1] > 80 && NPC.ai[1] < 90)
                     {
+                        
                         NPC.velocity = (NPC.velocity * 10 - DashDir * 10) / 11f;
                         NPC.rotation = NPC.velocity.ToRotation();
                         NPC.velocity *= 0.5f;
@@ -155,11 +173,13 @@ namespace CalamityYharonChange.Content.NPCs.YharonNPC.Skills.Phase1
                     {
                         if (UseInvertSkill[1]) // 月华
                         {
-                            var proj = Projectile.NewProjectileDirect(NPC.GetSource_FromAI(), NPC.Center, Vector2.Zero, YharonNPC.YharonMoonLighting, NPC.GetProjectileDamage(YharonNPC.YharonMoonLighting), 0f, Target.whoAmI, 400f,4000);
+                            //var proj = Projectile.NewProjectileDirect(NPC.GetSource_FromAI(), NPC.Center, Vector2.Zero, YharonNPC.YharonMoonLighting, NPC.GetProjectileDamage(YharonNPC.YharonMoonLighting), 0f, Target.whoAmI, 400f,4000);
+                            Projectile.NewProjectile(NPC.GetSource_FromAI(), NPC.Center, Vector2.Zero, ModContent.ProjectileType<MoonHalo>(), NPC.GetProjectileDamage(ModContent.ProjectileType<MoonHalo>()), 0f, Main.myPlayer);
                         }
                         else // 钢铁
                         {
-                            var proj = Projectile.NewProjectileDirect(NPC.GetSource_FromAI(), NPC.Center, Vector2.Zero, YharonNPC.YharonFireBoom, NPC.GetProjectileDamage(YharonNPC.YharonFireBoom), 0f, Target.whoAmI, 5f);
+                            Projectile.NewProjectile(NPC.GetSource_FromAI(), NPC.Center, Vector2.Zero, ModContent.ProjectileType<FireBurstRing2>(), NPC.GetProjectileDamage(ModContent.ProjectileType<FireBurstRing2>()), 0f, Main.myPlayer, 0, 0f);
+                            //var proj = Projectile.NewProjectileDirect(NPC.GetSource_FromAI(), NPC.Center, Vector2.Zero, YharonNPC.YharonFireBoom, NPC.GetProjectileDamage(YharonNPC.YharonFireBoom), 0f, Target.whoAmI, 5f);
                         }
                     }
                     #endregion
@@ -169,13 +189,14 @@ namespace CalamityYharonChange.Content.NPCs.YharonNPC.Skills.Phase1
                     }
                     else if (NPC.ai[1] > 120)
                     {
+                        /*
                         vel = (Target.Center - NPC.Center).SafeNormalize(default);
                         NPC.spriteDirection = NPC.direction = (vel.X > 0).ToDirectionInt();
                         NPC.velocity += vel;
                         NPC.rotation = NPC.velocity.ToRotation();
                         NPC.velocity *= 0.2f;
                         if (NPC.spriteDirection == -1)
-                            NPC.rotation += MathHelper.Pi;
+                            NPC.rotation += MathHelper.Pi;*/
                     }
                     break;
                 default:

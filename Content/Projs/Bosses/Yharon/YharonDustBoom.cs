@@ -1,6 +1,6 @@
 ﻿using CalamityYharonChange.Content.NPCs.Dusts;
 using CalamityYharonChange.Content.NPCs.YharonNPC;
-using CalamityYharonChange.Content.Partcles;
+using CalamityYharonChange.Content.Particles;
 using CalamityYharonChange.Core.Particles;
 using System;
 using System.Collections.Generic;
@@ -30,20 +30,20 @@ namespace CalamityYharonChange.Content.Projs.Bosses.Yharon
             if (Projectile.ai[2] == 0)
             {
                 Projectile.ai[2] = Projectile.timeLeft;
-                YharonDustBoomPartcles.FixedLength = size;
+                YharonDustBoomParticles.FixedLength = size;
             }
-            YharonDustBoomPartcles.FixedPos = Projectile.Center;
+            YharonDustBoomParticles.FixedPos = Projectile.Center;
             Projectile.alpha = 0;
             if (Projectile.timeLeft > Projectile.ai[2] * 0.5f)
             {
                 for (int i = 0; i < 3; i++)
                 {
-                    PartclesSystem.AddPartcle(BasicPartcle.DrawLayer.AfterDust, new YharonDustBoomPartcles()
+                    ParticlesSystem.AddParticle(BasicParticle.DrawLayer.AfterDust, new YharonDustBoomParticles()
                     {
                         position = Projectile.Center + Main.rand.NextVector2Unit() * Main.rand.NextFloat(10,20) * 20,
                         color = Color.Lerp(Color.Red, Color.OrangeRed, Main.rand.NextFloat()) with { A = 0 },
                         scale = new Vector2(Projectile.scale * 0.1f),
-                        TimeLeftMax = 300,
+                        maxTime = 300,
                     });
                 }
             }
@@ -56,7 +56,7 @@ namespace CalamityYharonChange.Content.Projs.Bosses.Yharon
         }
         public override void OnKill(int timeLeft)
         {
-            YharonDustBoomPartcles.FixedLength = 0;
+            YharonDustBoomParticles.FixedLength = 0;
             SoundEngine.PlaySound(SoundID.Item14, Projectile.Center);
             Projectile.NewProjectileDirect(Projectile.GetSource_FromAI(), Projectile.Center, Vector2.Zero, YharonNPC.YharonRoarWave, Projectile.damage + 1, 0f, Projectile.owner, 0, Projectile.ai[1]);
             Main.instance.CameraModifiers.Add(new PunchCameraModifier(Projectile.Center, Main.rand.NextVector2Unit(), 10, 60, 60));

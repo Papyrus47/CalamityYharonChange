@@ -27,6 +27,12 @@
             Color = color;
             TexCoord = texCoord;
         }
+        public CustomVertexInfo(Vector2 position, Vector3 texCoord, Color color)
+        {
+            Position = position;
+            Color = color;
+            TexCoord = texCoord;
+        }
 
         public VertexDeclaration VertexDeclaration => _vertexDeclaration;
     }

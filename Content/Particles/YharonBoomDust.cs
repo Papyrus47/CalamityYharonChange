@@ -5,14 +5,14 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace CalamityYharonChange.Content.Partcles
+namespace CalamityYharonChange.Content.Particles
 {
-    public class YharonBoomDust : BasicPartcle
+    public class YharonBoomDust : BasicParticle
     {
         public override Asset<Texture2D> Texture => AssetPreservation.Extra[2];
         public YharonBoomDust()
         {
-            TimeLeftMax = 180;
+            maxTime = 180;
             color = Color.Gray with { A = 0 } * 0.2f;
             extraUpdate = 2;
         }

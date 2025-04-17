@@ -1,4 +1,4 @@
-﻿using CalamityYharonChange.Content.Partcles;
+﻿using CalamityYharonChange.Content.Particles;
 using CalamityYharonChange.Core.Particles;
 using System;
 using System.Collections.Generic;
@@ -37,13 +37,13 @@ namespace CalamityYharonChange.Content.Projs.Bosses.Yharon
                 SoundEngine.PlaySound(SoundID.Item14, Projectile.Center);
                 for (int i = 0; i < 25; i++)
                 {
-                    PartclesSystem.AddPartcle(BasicPartcle.DrawLayer.AfterDust, new YharonBoomDust()
+                    ParticlesSystem.AddParticle(BasicParticle.DrawLayer.AfterDust, new YharonBoomDust()
                     {
                         position = Projectile.Center,
                         velocity = Main.rand.NextVector2Unit() * Main.rand.NextFloat(10, 20),
                         scale = new Vector2(1f),
                     });
-                    PartclesSystem.AddPartcle(BasicPartcle.DrawLayer.AfterProj, new YharonBoomExtra98()
+                    ParticlesSystem.AddParticle(BasicParticle.DrawLayer.AfterProj, new YharonBoomExtra98()
                     {
                         position = Projectile.Center,
                         velocity = Main.rand.NextVector2Unit() * 10f,

@@ -63,11 +63,12 @@ namespace CalamityYharonChange.Content.NPCs.YharonNPC.Skills
                 Target.Center -= (NPC.Center - Target.Center).SafeNormalize(default);
                 Target.velocity = (NPC.Center - Target.Center).SafeNormalize(default) * 5;
             }
+            /*
             for (int i = 0; i < 360; i++)
             {
                 Vector2 pos = NPC.Center + Vector2.UnitX.RotatedBy(i / 360f * MathHelper.TwoPi) * (limit * 16 + 100);
                 Dust dust = Dust.NewDustPerfect(pos, ModContent.DustType<YharonFireDust>(), (pos - NPC.Center).SafeNormalize(default) * 5, 100, Color.OrangeRed, 0.6f);
-            }
+            }*/
         }
     }
 }

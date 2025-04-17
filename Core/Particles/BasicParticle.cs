@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace CalamityYharonChange.Core.Particles
 {
-    public abstract class BasicPartcle
+    public abstract class BasicParticle
     {
         public enum DrawLayer : byte
         {
@@ -50,11 +50,11 @@ namespace CalamityYharonChange.Core.Particles
         /// <summary>
         /// 生命周期
         /// </summary>
-        public float TimeLeft;
+        public float lifetime;
         /// <summary>
         /// 最大生命周期
         /// </summary>
-        public float TimeLeftMax;
+        public float maxTime;
         /// <summary>
         /// 是否应该移除
         /// </summary>
@@ -71,8 +71,8 @@ namespace CalamityYharonChange.Core.Particles
         {
             if (ShouldUpdatePos())
                 position += velocity;
-            TimeLeft++;
-            if (TimeLeft >= TimeLeftMax)
+            lifetime++;
+            if (lifetime >= maxTime)
                 ShouldRemove = true;
             PostUpdate();
         }

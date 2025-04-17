@@ -4,7 +4,9 @@ using CalamityMod.Projectiles.Boss;
 using CalamityYharonChange.Content.NPCs.Dusts;
 using CalamityYharonChange.Content.Projs;
 using CalamityYharonChange.Content.Projs.Bosses.Yharon;
+using CalamityYharonChange.Core.NPCAI;
 using CalamityYharonChange.Core.SkillsNPC;
+using Microsoft.CodeAnalysis;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -18,7 +20,6 @@ namespace CalamityYharonChange.Content.NPCs.YharonNPC.Skills.Phase1
     /// </summary>
     public class FirstAttack_ProjHell : BasicPhase1Skills
     {
-        public int Timer,Timer1;
         public Vector2 FixedPos;
         public FirstAttack_ProjHell(NPC npc) : base(npc)
         {
@@ -31,12 +32,15 @@ namespace CalamityYharonChange.Content.NPCs.YharonNPC.Skills.Phase1
             LimitEdge();
             if ((int)NPC.ai[0] == 1)
             {
-                Timer = Timer1 = 0;
                 FixedPos = NPC.Center;
-                YharonNPC.ExtraAI += Shoot;
+                new ShootRing().ApplyExtraAI(YharonNPC.extraAIs, NPC);
+                Projectile.NewProjectileDirect(NPC.GetSource_FromAI(), NPC.Center, Vector2.Zero, ModContent.ProjectileType<LimitArea>(), 0, 0f, Target.whoAmI,NPC.whoAmI,16 * 90);
+
             }
-            if((int)NPC.ai[0] == 300)
-                YharonNPC.ExtraAI += Shoot1;
+            if ((int)NPC.ai[0] == 300)
+            {
+                new ShootRing() { counts = 4 }.ApplyExtraAI(YharonNPC.extraAIs, NPC);
+            }
             if ((int)NPC.ai[0] == 1) // 产生扩散波,并且上Debuff
             {
                 Projectile.NewProjectileDirect(NPC.GetSource_FromAI(), NPC.Center, Vector2.Zero, YharonNPC.YharonRoarWave, 0, 0f, Target.whoAmI);
@@ -60,44 +64,8 @@ namespace CalamityYharonChange.Content.NPCs.YharonNPC.Skills.Phase1
                 }
             }
         }
-        public void Shoot()
-        {
-            Timer++;
-            if (Timer % 120 == 0)
-            {
-                int lenght = (int)(Timer / 60); // 距离
-                float Const = 20 + lenght * 20;
-                for (int i = 0; i < Const; i++)
-                {
-                    Projectile.NewProjectileDirect(NPC.GetSource_FromAI(), FixedPos + (Vector2.UnitX.RotatedBy(i / Const * MathHelper.TwoPi) * lenght * 98f * 2), Vector2.Zero, YharonNPC.YharonNormalBoomProj, NPC.GetProjectileDamage(YharonNPC.YharonNormalBoomProj), 0f, Target.whoAmI);
-                    Projectile.NewProjectileDirect(NPC.GetSource_FromAI(), FixedPos + (Vector2.UnitX.RotatedBy(i / Const * MathHelper.TwoPi) * lenght * 98f * 2), Vector2.Zero, YharonNPC.YharonNormalBoomProj, 0, 0f, Target.whoAmI, 1);
-                }
-            }
-            if (Timer / 120 > 7)
-            {
-                YharonNPC.ExtraAI -= Shoot;
-                Timer = 0;
-            }
-        }
-        public void Shoot1()
-        {
-            Timer1++;
-            if (Timer1 % 120 == 0)
-            {
-                int lenght = (int)(Timer1 / 60); // 距离
-                float Const = 20 + lenght * 20;
-                for (int i = 0; i < Const; i++)
-                {
-                    Projectile.NewProjectileDirect(NPC.GetSource_FromAI(), FixedPos + (Vector2.UnitX.RotatedBy(i / Const * MathHelper.TwoPi) * lenght * 98f * 2), Vector2.Zero, YharonNPC.YharonNormalBoomProj, NPC.GetProjectileDamage(YharonNPC.YharonNormalBoomProj), 0f, Target.whoAmI);
-                    Projectile.NewProjectileDirect(NPC.GetSource_FromAI(), FixedPos + (Vector2.UnitX.RotatedBy(i / Const * MathHelper.TwoPi) * lenght * 98f * 2), Vector2.Zero, YharonNPC.YharonNormalBoomProj, 0, 0f, Target.whoAmI, 1);
-                }
-            }
-            if (Timer1 / 120 > 7)
-            {
-                YharonNPC.ExtraAI -= Shoot1;
-                Timer1 = 0;
-            }
-        }
+
+        
         public override bool PreDraw(SpriteBatch spriteBatch, Vector2 screenPos, Color drawColor)
         {
             DrawBall(spriteBatch, screenPos);
@@ -109,5 +77,28 @@ namespace CalamityYharonChange.Content.NPCs.YharonNPC.Skills.Phase1
         }
         public override bool SwitchCondition(NPCSkills changeToSkill) => (NPC.ai[0] - 30) / 60 > 9 && base.SwitchCondition(changeToSkill);
         public override bool ActivationCondition(NPCSkills activeSkill) => true; // 只要上个技能满足切换条件就允许切换该技能
+    }
+
+    /// <summary>
+    /// 环状AOE
+    /// </summary>
+    public class ShootRing : ExtraAI
+    {
+        private int timer;
+        public int counts = 6;
+        private int distance;
+        public override void AI()
+        {
+            FireBurstRing.width = 400;
+            if (++timer % 120 == 0)
+            {
+                Projectile.NewProjectileDirect(npc.GetSource_FromAI(), npc.Center, Vector2.Zero, ModContent.ProjectileType<FireBurstRing>(), npc.GetProjectileDamage(YharonNPC.YharonNormalBoomProj), 0f, Main.myPlayer, 0, distance);
+                distance += FireBurstRing.width;
+            }
+            if (timer >= 120 * counts)
+            {
+                Remove();
+            }
+        }
     }
 }

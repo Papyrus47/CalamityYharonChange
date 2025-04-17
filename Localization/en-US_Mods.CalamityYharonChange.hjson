@@ -12,6 +12,13 @@ Projectiles: {
 	YharonNormalBoomProj.DisplayName: Yharon Normal Boom Proj
 	YharonMoonLighting.DisplayName: Yharon Moon Lighting
 	Boss.DarkRedFlareBomb.DisplayName: Dark Red Flare Bomb
+	FireBurst.DisplayName: Fire Burst
+	FireBurstRing.DisplayName: Fire Burst Ring
+	MoonHalo.DisplayName: Moon Halo
+	MoonHaloLightning.DisplayName: Moon Halo Lightning
+	FireBurst_Rectangle.DisplayName: Fire Burst_ Rectangle
+	FireBurstRing2.DisplayName: Fire Burst Ring2
+	LimitArea.DisplayName: Limit Area
 }
 
 Buffs: {
@@ -65,6 +72,11 @@ Configs: {
 Items: {
 	YharonEgg: {
 		DisplayName: Yharon Egg
+		Tooltip: ""
+	}
+
+	Tester: {
+		DisplayName: Tester
 		Tooltip: ""
 	}
 }

@@ -10,6 +10,7 @@ using CalamityYharonChange.Content.Projs.Bosses.Yharon;
 using CalamityYharonChange.Content.Skys;
 using CalamityYharonChange.Content.Systems;
 using CalamityYharonChange.Core;
+using CalamityYharonChange.Core.NPCAI;
 using CalamityYharonChange.Core.SkillsNPC;
 using System.Collections.Generic;
 using Terraria;
@@ -51,11 +52,9 @@ namespace CalamityYharonChange.Content.NPCs.YharonNPC
         public readonly int MusicTimerPhase1 = 52;
         public MusicSupport musicSupport;
         public OnDead onDead;
-        public readonly List<Action> actions = new();
-        public event Action ExtraAI
-        {
-            add => actions.Add(value); remove => actions.Remove(value);
-        }
+
+        public List<ExtraAI> extraAIs = new();
+
         public override void SetStaticDefaults()
         {
             base.SetStaticDefaults();
@@ -160,13 +159,13 @@ namespace CalamityYharonChange.Content.NPCs.YharonNPC
         public override void AI()
         {
             musicSupport.Update();
-            if (actions.Count > 0)
+
+            for (int i = 0; i < extraAIs.Count; i++)
             {
-                for (int i = actions.Count - 1; i >= 0; i--)
-                {
-                    actions[i]?.Invoke();
-                }
+                ExtraAI extraAI = extraAIs[i];
+                extraAI.AI();
             }
+            
             if (CurrentSkill is not OnDead && (TargetPlayer.dead || !TargetPlayer.active))
             {
                 CurrentSkill.OnSkillDeactivate(onDead);
