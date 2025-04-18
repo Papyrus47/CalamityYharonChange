@@ -46,13 +46,13 @@ namespace CalamityYharonChange.Content.Projs.Bosses.Yharon
         {
             SpriteBatch spriteBatch = Main.spriteBatch;
             spriteBatch.End();
-            spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.PointWrap, DepthStencilState.Default, RasterizerState.CullNone, null, Main.GameViewMatrix.ZoomMatrix);
+            spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.AlphaBlend, SamplerState.PointWrap, DepthStencilState.Default, RasterizerState.CullNone, null, Main.GameViewMatrix.TransformationMatrix);
 
             Main.instance.LoadProjectile(Type);
             Texture2D projTex = TextureAssets.Projectile[Type].Value; // 获取贴图
-            Vector2 drawPos = Projectile.Center - Main.screenPosition;
-            Color color = Color.OrangeRed with { A = 0 } * (1f - Projectile.ai[2] / 60f) * (Projectile.ai[1] / MoveTime);
-            Color color1 = Color.White with { A = 0 } * (1f - Projectile.ai[2] / 60f) * (Projectile.ai[1] / MoveTime);
+            Vector2 drawPos = Projectile.Center;
+            Color color = Color.OrangeRed with { A = 255 } * (1f - Projectile.ai[2] / 60f) * (Projectile.ai[1] / MoveTime);
+            Color color1 = Color.White with { A = 255 } * (1f - Projectile.ai[2] / 60f) * (Projectile.ai[1] / MoveTime);
 
             #region 竖着的
             _ = TextureAssets.Extra[193].Value; // 预加载
@@ -67,26 +67,20 @@ namespace CalamityYharonChange.Content.Projs.Bosses.Yharon
             };
             CustomVertexInfo[] customVertexInfos = new CustomVertexInfo[4];
             float timer = Main.GlobalTimeWrappedHourly % 20;
-            customVertexInfos[0] = new CustomVertexInfo(new Vector2(poses[0].X, poses[0].Y), color, new Vector3(timer, 0,0));  // 左下角
-            customVertexInfos[1] = new CustomVertexInfo(new Vector2(poses[1].X, poses[1].Y), color, new Vector3(1 + timer, 1, 0));  // 右下角
-            customVertexInfos[2] = new CustomVertexInfo(new Vector2(poses[2].X, poses[2].Y), color, new Vector3(timer, 0,0));  // 左上角
-            customVertexInfos[3] = new CustomVertexInfo(new Vector2(poses[3].X, poses[3].Y), color, new Vector3(1 + timer, 1, 0));  // 右上角
+            customVertexInfos[0] = new CustomVertexInfo(new Vector2(poses[0].X, poses[0].Y), color, new Vector3(0, 0,0));  // 左下角
+            customVertexInfos[1] = new CustomVertexInfo(new Vector2(poses[1].X, poses[1].Y), color, new Vector3(0 , 1, 0));  // 右下角
+            customVertexInfos[2] = new CustomVertexInfo(new Vector2(poses[2].X, poses[2].Y), color, new Vector3(1, 0,0));  // 左上角
+            customVertexInfos[3] = new CustomVertexInfo(new Vector2(poses[3].X, poses[3].Y), color, new Vector3(1 , 1, 0));  // 右上角
             GraphicsDevice graphicsDevice = Main.graphics.GraphicsDevice;
-            graphicsDevice.Textures[0] = lineTex;
-            graphicsDevice.SamplerStates[0] = SamplerState.LinearWrap;
-            //var origin = graphicsDevice.RasterizerState;
-            //RasterizerState rasterizerState = new()
-            //{
-            //    CullMode = CullMode.None,
-            //    FillMode = FillMode.WireFrame
-            //};
-            //graphicsDevice.RasterizerState = rasterizerState;
-            //graphicsDevice.Textures[0] = TextureAssets.MagicPixel.Value;
+
+            spriteBatch.End();
+            spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.Additive, SamplerState.PointWrap, DepthStencilState.Default, RasterizerState.CullNone, null, Main.GameViewMatrix.TransformationMatrix);
+
+            SetShaderParameters(new Vector2(1f, 0.25f), 0.81f, 0.01f);
+            graphicsDevice.DrawUserPrimitives(PrimitiveType.TriangleStrip, customVertexInfos, 0, 2);
+            SetShaderParameters(new Vector2(2f, 0.3f), 0.7f, 0.02f);
             graphicsDevice.DrawUserPrimitives(PrimitiveType.TriangleStrip, customVertexInfos, 0, 2);
 
-            graphicsDevice.Textures[0] = TextureAssets.Extra[197].Value;
-            graphicsDevice.DrawUserPrimitives(PrimitiveType.TriangleStrip, customVertexInfos, 0, 2);
-            //graphicsDevice.RasterizerState = origin;
             #endregion
             #region 下面横着
             poses = new Vector2[4]
@@ -96,24 +90,19 @@ namespace CalamityYharonChange.Content.Projs.Bosses.Yharon
                 drawPos + new Vector2((Projectile.ai[1] / MoveTime * 45f + 15f) * 32f * -Projectile.ai[0],Projectile.height), // 右上角
                 drawPos + new Vector2((Projectile.ai[1] / MoveTime * 45f + 15f) * 32f * -Projectile.ai[0],-Projectile.height) // 左上角
             };
-            customVertexInfos[0] = new CustomVertexInfo(new Vector2(poses[0].X, poses[0].Y), color, new Vector3(timer, 0, 0));  // 左下角
-            customVertexInfos[1] = new CustomVertexInfo(new Vector2(poses[1].X, poses[1].Y), color, new Vector3(1 + timer, 1, 0));  // 右下角
-            customVertexInfos[2] = new CustomVertexInfo(new Vector2(poses[2].X, poses[2].Y), color, new Vector3(timer, 0, 0));  // 左上角
-            customVertexInfos[3] = new CustomVertexInfo(new Vector2(poses[3].X, poses[3].Y), color, new Vector3(1 + timer, 1, 0));  // 右上角
+            customVertexInfos[0] = new CustomVertexInfo(new Vector2(poses[0].X, poses[0].Y), color, new Vector3(0, 0, 0));  // 左下角
+            customVertexInfos[1] = new CustomVertexInfo(new Vector2(poses[1].X, poses[1].Y), color, new Vector3(0, 1, 0));  // 右下角
+            customVertexInfos[2] = new CustomVertexInfo(new Vector2(poses[2].X, poses[2].Y), color, new Vector3(1, 0, 0));  // 左上角
+            customVertexInfos[3] = new CustomVertexInfo(new Vector2(poses[3].X, poses[3].Y), color, new Vector3(1, 1, 0));  // 右上角
             graphicsDevice.Textures[0] = lineTex;
             graphicsDevice.SamplerStates[0] = SamplerState.LinearWrap;
-            //var origin = graphicsDevice.RasterizerState;
-            //RasterizerState rasterizerState = new()
-            //{
-            //    CullMode = CullMode.None,
-            //    FillMode = FillMode.WireFrame
-            //};
-            //graphicsDevice.RasterizerState = rasterizerState;
-            //graphicsDevice.Textures[0] = TextureAssets.MagicPixel.Value;
+            spriteBatch.End();
+            spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.Additive, SamplerState.PointWrap, DepthStencilState.Default, RasterizerState.CullNone, null, Main.GameViewMatrix.TransformationMatrix);
+
+            SetShaderParameters(new Vector2(1f, 0.25f), 0.81f, 0.01f);
             graphicsDevice.DrawUserPrimitives(PrimitiveType.TriangleStrip, customVertexInfos, 0, 2);
 
-            graphicsDevice.Textures[0] = TextureAssets.Extra[197].Value;
-            graphicsDevice.DrawUserPrimitives(PrimitiveType.TriangleStrip, customVertexInfos, 0, 2);
+
             #endregion
             #region 上面横着
             poses = new Vector2[4]
@@ -123,28 +112,28 @@ namespace CalamityYharonChange.Content.Projs.Bosses.Yharon
                 drawPos + new Vector2((Projectile.ai[1] / MoveTime * 45f + 15f) * 32f * -Projectile.ai[0],Projectile.height - 8000), // 右上角
                 drawPos + new Vector2((Projectile.ai[1] / MoveTime * 45f + 15f) * 32f * -Projectile.ai[0],-Projectile.height - 8000) // 左上角
             };
-            customVertexInfos[0] = new CustomVertexInfo(new Vector2(poses[0].X, poses[0].Y), color, new Vector3(timer, 0, 0));  // 左下角
-            customVertexInfos[1] = new CustomVertexInfo(new Vector2(poses[1].X, poses[1].Y), color, new Vector3(1 + timer, 1, 0));  // 右下角
-            customVertexInfos[2] = new CustomVertexInfo(new Vector2(poses[2].X, poses[2].Y), color, new Vector3(timer, 0, 0));  // 左上角
-            customVertexInfos[3] = new CustomVertexInfo(new Vector2(poses[3].X, poses[3].Y), color, new Vector3(1 + timer, 1, 0));  // 右上角
+            customVertexInfos[0] = new CustomVertexInfo(new Vector2(poses[0].X, poses[0].Y), color, new Vector3(0, 0, 0));  // 左下角
+            customVertexInfos[1] = new CustomVertexInfo(new Vector2(poses[1].X, poses[1].Y), color, new Vector3(0, 1, 0));  // 右下角
+            customVertexInfos[2] = new CustomVertexInfo(new Vector2(poses[2].X, poses[2].Y), color, new Vector3(1, 0, 0));  // 左上角
+            customVertexInfos[3] = new CustomVertexInfo(new Vector2(poses[3].X, poses[3].Y), color, new Vector3(1, 1, 0));  // 右上角
             graphicsDevice.Textures[0] = lineTex;
             graphicsDevice.SamplerStates[0] = SamplerState.LinearWrap;
-            //var origin = graphicsDevice.RasterizerState;
-            //RasterizerState rasterizerState = new()
-            //{
-            //    CullMode = CullMode.None,
-            //    FillMode = FillMode.WireFrame
-            //};
-            //graphicsDevice.RasterizerState = rasterizerState;
-            //graphicsDevice.Textures[0] = TextureAssets.MagicPixel.Value;
+            spriteBatch.End();
+            spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.Additive, SamplerState.PointWrap, DepthStencilState.Default, RasterizerState.CullNone, null, Main.GameViewMatrix.TransformationMatrix);
+
+            SetShaderParameters(new Vector2(1f, 0.25f), 0.81f, 0.01f);
             graphicsDevice.DrawUserPrimitives(PrimitiveType.TriangleStrip, customVertexInfos, 0, 2);
 
-            graphicsDevice.Textures[0] = TextureAssets.Extra[197].Value;
-            graphicsDevice.DrawUserPrimitives(PrimitiveType.TriangleStrip, customVertexInfos, 0, 2);
+
+            spriteBatch.End();
+            spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.PointWrap, DepthStencilState.Default, RasterizerState.CullNone, null, Main.GameViewMatrix.TransformationMatrix);
 
             #endregion
             const float scale = 1.6f;
             const float colorSclae = 1;
+            drawPos -= Main.screenPosition;
+            color.A = 0;
+            color1.A = 0;
             Main.EntitySpriteDraw(projTex, drawPos, null, color * colorSclae, Projectile.rotation, projTex.Size() * 0.5f, Projectile.scale * scale, SpriteEffects.None, 0f);
             Main.EntitySpriteDraw(projTex, drawPos + new Vector2(0, -8000), null, color * colorSclae, Projectile.rotation, projTex.Size() * 0.5f, Projectile.scale * scale, SpriteEffects.None, 0f);
             Main.EntitySpriteDraw(projTex, drawPos, null, color * colorSclae, Projectile.rotation, projTex.Size() * 0.5f, Projectile.scale * scale, SpriteEffects.None, 0f);
@@ -161,5 +150,31 @@ namespace CalamityYharonChange.Content.Projs.Bosses.Yharon
             
             return false;
         }
+        private void SetShaderParameters(Vector2 uvScale, float intensity, float speed)
+        {
+            Effect shader = ModContent.Request<Effect>("CalamityYharonChange/Assets/Effects/FireBurstProj", AssetRequestMode.ImmediateLoad).Value;
+
+            var projection = Matrix.CreateOrthographicOffCenter(0, Main.screenWidth, Main.screenHeight, 0, 0, 1);
+            var model = Matrix.CreateTranslation(new Vector3(-Main.screenPosition.X, -Main.screenPosition.Y, 0)) * Main.GameViewMatrix.TransformationMatrix;
+
+            shader.Parameters["uTransform"].SetValue(model * projection);
+            shader.Parameters["_Threshold1"].SetValue(-0.6f);
+            shader.Parameters["_MainColorScale"].SetValue(intensity);
+            shader.Parameters["_UVScale"].SetValue(uvScale);
+            shader.Parameters["_Edge"].SetValue(1f);
+            shader.Parameters["_Decrease"].SetValue(0f);
+            shader.Parameters["_Offset"].SetValue(new Vector2(-(float)Main.timeForVisualEffects * speed,0));
+            shader.CurrentTechnique.Passes[0].Apply();
+
+            Main.graphics.GraphicsDevice.Textures[0] = ModContent.Request<Texture2D>("CalamityYharonChange/Assets/Images/RangeV").Value;
+            Main.graphics.GraphicsDevice.Textures[1] = ModContent.Request<Texture2D>("CalamityYharonChange/Assets/Images/Perlin1").Value;
+            Main.graphics.GraphicsDevice.Textures[2] = ModContent.Request<Texture2D>("CalamityYharonChange/Assets/Images/Cloud1").Value;
+            Main.graphics.GraphicsDevice.Textures[3] = ModContent.Request<Texture2D>("CalamityYharonChange/Assets/Images/Color_Fire").Value;
+
+            Main.graphics.GraphicsDevice.SamplerStates[0] = SamplerState.LinearClamp;
+            Main.graphics.GraphicsDevice.SamplerStates[1] = SamplerState.LinearWrap;
+            Main.graphics.GraphicsDevice.SamplerStates[2] = SamplerState.LinearWrap;
+        }
+
     }
 }

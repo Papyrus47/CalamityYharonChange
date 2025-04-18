@@ -27,6 +27,9 @@ namespace CalamityYharonChange.Core.Particles
             /// </summary>
             AfterPlayer
         }
+
+        public DrawLayer drawLayer = DrawLayer.AfterDust;
+
         /// <summary>
         /// 位置
         /// </summary>

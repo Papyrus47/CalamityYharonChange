@@ -58,6 +58,20 @@ namespace CalamityYharonChange.Content.Projs
             float radius = Projectile.ai[1];
             float width = 0.5f * radius;
 
+            for (int i = 0; i <= counts; i++)
+            {
+                float uvx = (float)i / counts;
+                vertices.Add(new(Projectile.Center - Main.screenPosition + (i * MathHelper.TwoPi / counts).ToRotationVector2() * radius, new Vector3(uvx, 0, 0), color));
+                vertices.Add(new(Projectile.Center - Main.screenPosition + (i * MathHelper.TwoPi / counts).ToRotationVector2() * (radius + width), new Vector3(uvx, 1, 0), color * 0f));
+            }
+            Main.spriteBatch.End();
+            Main.spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.AlphaBlend, SamplerState.PointWrap, DepthStencilState.Default, RasterizerState.CullNone, null, Main.Transform);
+
+            Main.graphics.GraphicsDevice.Textures[0] = Terraria.GameContent.TextureAssets.MagicPixel.Value;
+            Main.graphics.GraphicsDevice.SamplerStates[1] = SamplerState.PointWrap;
+
+
+            Main.graphics.GraphicsDevice.DrawUserPrimitives(PrimitiveType.TriangleStrip, vertices.ToArray(), 0, vertices.Count - 2);
 
             vertices.Clear();
             width = 100 * alpha;
