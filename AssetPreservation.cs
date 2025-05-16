@@ -34,7 +34,7 @@
         {
             Perlin = null;
 
-            Extra.Clear();
+            Extra?.Clear();
             Extra = null;
         }
     }

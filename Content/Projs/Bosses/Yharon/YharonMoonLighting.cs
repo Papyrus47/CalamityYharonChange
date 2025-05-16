@@ -1,12 +1,4 @@
-﻿using CalamityYharonChange.Content.Particles;
-using CalamityYharonChange.Core.Particles;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace CalamityYharonChange.Content.Projs.Bosses.Yharon
+﻿namespace CalamityYharonChange.Content.Projs.Bosses.Yharon
 {
     /// <summary>
     /// ai[0] = 最小范围

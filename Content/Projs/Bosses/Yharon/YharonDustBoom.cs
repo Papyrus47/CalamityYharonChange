@@ -1,12 +1,6 @@
-﻿using CalamityYharonChange.Content.NPCs.Dusts;
-using CalamityYharonChange.Content.NPCs.YharonNPC;
+﻿using CalamityYharonChange.Content.NPCs.YharonNPC;
 using CalamityYharonChange.Content.Particles;
 using CalamityYharonChange.Core.Particles;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace CalamityYharonChange.Content.Projs.Bosses.Yharon
 {
@@ -40,7 +34,7 @@ namespace CalamityYharonChange.Content.Projs.Bosses.Yharon
                 {
                     ParticlesSystem.AddParticle(BasicParticle.DrawLayer.AfterDust, new YharonDustBoomParticles()
                     {
-                        position = Projectile.Center + Main.rand.NextVector2Unit() * Main.rand.NextFloat(10,20) * 20,
+                        position = Projectile.Center + Main.rand.NextVector2Unit() * Main.rand.NextFloat(10, 20) * 20,
                         color = Color.Lerp(Color.Red, Color.OrangeRed, Main.rand.NextFloat()) with { A = 0 },
                         scale = new Vector2(Projectile.scale * 0.1f),
                         maxTime = 300,
